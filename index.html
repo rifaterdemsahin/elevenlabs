@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElevenLabs Voice Studio — Powered by fal.ai</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f7ff',
+              100: '#ebf0fe',
+              200: '#d6e0fd',
+              300: '#b3c7fc',
+              400: '#8aa6f9',
+              500: '#6382f6',
+              600: '#4f66ee',
+              700: '#3f4fd6',
+              800: '#3341ad',
+              900: '#2d3888',
+              950: '#1b2152',
+            },
+            dark: {
+              950: '#07090e',
+              900: '#0c1017',
+              850: '#111722',
+              800: '#171f2e',
+              750: '#1d273a',
+              700: '#26334a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 130, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.8);
+    }
+    input[type="range"] {
+      accent-color: #6382f6;
+    }
+    .glow-effect {
+      box-shadow: 0 0 25px -5px rgba(99, 130, 246, 0.3);
+    }
+    .glass-panel {
+      background: rgba(17, 23, 34, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    @keyframes pulse-wave {
+      0%, 100% { height: 12px; }
+      50% { height: 38px; }
+    }
+    .wave-bar {
+      animation: pulse-wave 1.2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 antialiased flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP HEADER / NAV -->
+  <header class="border-b border-slate-800/80 glass-panel sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-brand-500/20 ring-1 ring-white/20">
+          <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold text-white tracking-tight">ElevenLabs Studio</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">via fal.ai</span>
+          </div>
+          <p class="text-xs text-slate-400">Professional Voiceover & Audio Generation Engine</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <!-- API Key Status Badge / Button -->
+        <button id="apiKeyButton" onclick="openKeyModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 bg-dark-850 hover:bg-dark-800 border-slate-700 text-slate-300">
+          <span id="keyStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="keyStatusText">API Key Required</span>
+          <i data-lucide="key" class="w-3.5 h-3.5 text-slate-400"></i>
+        </button>
+
+        <!-- Quick Sample Preset Button -->
+        <button onclick="loadSampleScript()" title="Load Sample Script & Optimal Technical Settings" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 border border-brand-500/30 transition-all">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Sample Prompt</span>
+        </button>
+
+        <!-- GitHub Link -->
+        <a href="https://github.com/rifaterdemsahin/elevenlabs" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-400 hover:text-white border border-slate-800 transition">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow">
+    
+    <!-- API KEY ALERT BANNER (If not configured) -->
+    <div id="keyNoticeBanner" class="hidden mb-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 backdrop-blur flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-amber-200">Fal.ai API Key is not set</h4>
+          <p class="text-xs text-amber-300/80">Configure your FAL API key to generate ElevenLabs speech. Your key is stored locally in your browser cookie / storage.</p>
+        </div>
+      </div>
+      <button onclick="openKeyModal()" class="px-4 py-2 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition self-start sm:self-auto shadow">
+        Set FAL API Key
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- LEFT COLUMN: SCRIPT EDITOR & INSTRUCTIONS -->
+      <section class="lg:col-span-7 flex flex-col gap-4">
+        
+        <!-- Script Box Container -->
+        <div class="glass-panel rounded-2xl p-5 shadow-xl flex flex-col gap-4">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i>
+              <h2 class="text-sm font-bold text-white uppercase tracking-wider">Voiceover Script</h2>
+            </div>
+            
+            <!-- Script Utilities -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button onclick="insertPause()" title="Insert [pause] tag" class="px-2.5 py-1 text-xs rounded-md bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700/80 flex items-center gap-1">
+                <i data-lucide="pause-circle" class="w-3 h-3 text-brand-400"></i>
+                <span>+ [pause]</span>
+              </button>
+
+              <button onclick="formatAcronyms()" title="Auto-dot technical acronyms (IDE -> I.D.E., LLM -> L.L.M., API -> A.P.I., UI -> U.I.)" class="px-2.5 py-1 text-xs rounded-md bg-dark-800 hover:bg-dark-750 text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
+                <i data-lucide="spell-check" class="w-3 h-3 text-indigo-400"></i>
+                <span>Dot Acronyms</span>
+              </button>
+
+              <button onclick="clearScript()" title="Clear script editor" class="p-1 text-xs rounded-md hover:bg-dark-800 text-slate-400 hover:text-rose-400 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Script Textarea -->
+          <div class="relative">
+            <textarea id="scriptInput" rows="14" class="w-full bg-dark-900/90 border border-slate-800 focus:border-brand-500 rounded-xl p-4 text-sm leading-relaxed text-slate-100 font-sans focus:outline-none focus:ring-1 focus:ring-brand-500 transition custom-scrollbar resize-y placeholder:text-slate-600" placeholder="Type or paste your voiceover script here... Use [pause] for natural pauses or dotted acronyms (like I.D.E., L.L.M., A.P.I.) for crisp spelling."></textarea>
+          </div>
+
+          <!-- Script Statistics & Audio Tags Bar -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-400 pt-1">
+            <div class="flex items-center gap-4">
+              <span>Characters: <strong id="charCount" class="text-slate-200">0</strong></span>
+              <span>Words: <strong id="wordCount" class="text-slate-200">0</strong></span>
+              <span>Est. Duration: <strong id="estDuration" class="text-brand-400">0s</strong></span>
+            </div>
+
+            <!-- Quick Audio Tags for v3 -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[11px] text-slate-500">Audio Tags:</span>
+              <button onclick="insertTag('[whispers]')" class="px-1.5 py-0.5 rounded bg-dark-800 hover:bg-dark-750 text-[11px] text-slate-300 border border-slate-800">[whispers]</button>
+              <button onclick="insertTag('[excited]')" class="px-1.5 py-0.5 rounded bg-dark-800 hover:bg-dark-750 text-[11px] text-slate-300 border border-slate-800">[excited]</button>
+              <button onclick="insertTag('[slowly]')" class="px-1.5 py-0.5 rounded bg-dark-800 hover:bg-dark-750 text-[11px] text-slate-300 border border-slate-800">[slowly]</button>
+              <button onclick="insertTag('[firm]')" class="px-1.5 py-0.5 rounded bg-dark-800 hover:bg-dark-750 text-[11px] text-slate-300 border border-slate-800">[firm]</button>
+            </div>
+          </div>
+
+          <!-- Quick Pronunciation & Technical Guidance Note -->
+          <div class="p-3.5 rounded-xl bg-dark-900/60 border border-slate-800/80 text-xs text-slate-400 space-y-1.5">
+            <div class="flex items-center gap-1.5 font-semibold text-slate-300">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-brand-400"></i>
+              <span>Pronunciation & Format Guidance</span>
+            </div>
+            <p class="leading-normal">
+              Technical abbreviations like <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">I.D.E.</code>, <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">L.L.M.</code>, <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">A.P.I.</code>, and <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">U.I.</code> should be dotted so ElevenLabs spells them out letter-by-letter. Use <code class="text-brand-300 bg-brand-950/60 px-1 py-0.5 rounded">[pause]</code> to create rhythmic pacing between sections.
+            </p>
+          </div>
+        </div>
+
+        <!-- GENERATED AUDIO & PLAYER SECTION -->
+        <div id="playerSection" class="glass-panel rounded-2xl p-5 shadow-xl flex flex-col gap-4 border border-brand-500/20">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
+              <h2 class="text-sm font-bold text-white uppercase tracking-wider">Audio Output</h2>
+            </div>
+            <span id="outputStatusBadge" class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+              Ready to generate
+            </span>
+          </div>
+
+          <!-- Empty / Placeholder State -->
+          <div id="playerPlaceholder" class="py-10 flex flex-col items-center justify-center text-center gap-3 text-slate-500">
+            <div class="w-12 h-12 rounded-full bg-dark-900 flex items-center justify-center border border-slate-800">
+              <i data-lucide="waveform" class="w-6 h-6 text-slate-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-slate-400">No audio generated yet</p>
+              <p class="text-xs text-slate-600">Configure your script and settings, then click Generate Audio</p>
+            </div>
+          </div>
+
+          <!-- Active Audio Player & Controls -->
+          <div id="playerActive" class="hidden flex-col gap-4">
+            <audio id="audioElement" class="w-full rounded-lg bg-dark-900 border border-slate-800" controls preload="metadata"></audio>
+
+            <!-- Custom Controls & Meta -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <div class="flex items-center gap-2">
+                <a id="downloadAudioBtn" href="#" download="elevenlabs-voiceover.mp3" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 shadow transition">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                  <span>Download MP3</span>
+                </a>
+                <button onclick="copyAudioUrl()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition">
+                  <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                  <span id="copyBtnText">Copy Audio Link</span>
+                </button>
+              </div>
+
+              <div id="audioMetaDetails" class="text-xs text-slate-400 flex items-center gap-3">
+                <!-- Meta tags populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: ELEVENLABS SETTINGS & GENERATE BUTTON -->
+      <section class="lg:col-span-5 flex flex-col gap-4">
+        
+        <div class="glass-panel rounded-2xl p-5 shadow-xl flex flex-col gap-5">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4 text-brand-400"></i>
+              <h2 class="text-sm font-bold text-white uppercase tracking-wider">Generation Settings</h2>
+            </div>
+            
+            <button onclick="resetDefaultSettings()" title="Reset to optimal defaults" class="text-xs text-brand-400 hover:text-brand-300 font-medium">
+              Reset Defaults
+            </button>
+          </div>
+
+          <!-- MODEL SELECTOR -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-semibold text-slate-300 flex items-center justify-between">
+              <span>TTS Model Architecture</span>
+              <span id="modelTag" class="text-[11px] text-brand-400">Expressive & Tags</span>
+            </label>
+            <select id="modelSelect" onchange="onModelChange()" class="w-full bg-dark-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 font-medium focus:outline-none focus:border-brand-500">
+              <option value="fal-ai/elevenlabs/tts/eleven-v3" selected>Eleven Multilingual v3 (Most Expressive + Audio Tags)</option>
+              <option value="fal-ai/elevenlabs/tts/turbo-v2.5">Eleven Turbo v2.5 (Lowest Latency & Crisp Technical)</option>
+              <option value="fal-ai/elevenlabs/tts/multilingual-v2">Eleven Multilingual v2 (Classic Standard)</option>
+            </select>
+          </div>
+
+          <!-- VOICE SELECTOR -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-semibold text-slate-300 flex items-center justify-between">
+              <span>Voice Character</span>
+              <span id="voiceDesc" class="text-[11px] text-slate-400">Authoritative / Deep / Narration</span>
+            </label>
+            <div class="relative">
+              <select id="voiceSelect" onchange="onVoiceChange()" class="w-full bg-dark-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 font-medium focus:outline-none focus:border-brand-500">
+                <optgroup label="Recommended for Technical / Tech Guides">
+                  <option value="Adam" selected>Adam (Authoritative, Deep, Professional)</option>
+                  <option value="Brian">Brian (Deep, Resonant, Narrative)</option>
+                  <option value="Antoni">Antoni (Dynamic, Well-rounded, Crisp)</option>
+                  <option value="Daniel">Daniel (British, Authoritative, News)</option>
+                </optgroup>
+                <optgroup label="Conversational / Tutorials">
+                  <option value="Rachel">Rachel (Calm, Professional, Assistant)</option>
+                  <option value="Charlie">Charlie (Australian, Casual, Conversational)</option>
+                  <option value="Liam">Liam (American, Youthful, Articulate)</option>
+                  <option value="Matilda">Matilda (Warm, Friendly, Engaging)</option>
+                </optgroup>
+                <optgroup label="Expressive & Storytelling">
+                  <option value="Callum">Callum (Intense, Storytelling)</option>
+                  <option value="George">George (British, Warm, Storyteller)</option>
+                  <option value="Domi">Domi (Strong, Energetic)</option>
+                  <option value="Emily">Emily (Calm, Gentle)</option>
+                  <option value="Paul">Paul (Grounded, Announcer)</option>
+                  <option value="Sam">Sam (Dynamic, Raspy)</option>
+                </optgroup>
+                <optgroup label="Custom">
+                  <option value="custom">Custom Voice Name / ID...</option>
+                </optgroup>
+              </select>
+            </div>
+            <!-- Custom voice input if selected -->
+            <input type="text" id="customVoiceInput" class="hidden mt-1.5 w-full bg-dark-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 font-mono placeholder:text-slate-600 focus:outline-none focus:border-brand-500" placeholder="Enter custom ElevenLabs voice name or voice_id...">
+          </div>
+
+          <!-- SLIDER: STABILITY -->
+          <div class="flex flex-col gap-2 p-3 rounded-xl bg-dark-900/50 border border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-200">Stability</label>
+                <p class="text-[11px] text-slate-400">0.45 – 0.55 allows natural tone variation without getting unstable.</p>
+              </div>
+              <span id="stabilityVal" class="text-xs font-mono font-bold text-brand-400 bg-brand-950/80 border border-brand-800/50 px-2 py-0.5 rounded">0.50</span>
+            </div>
+            <input type="range" id="stabilitySlider" min="0.0" max="1.0" step="0.01" value="0.50" oninput="updateSliderValue('stability')" class="w-full h-1.5 bg-dark-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>0.0 (Expressive)</span>
+              <span class="text-brand-400">0.50 (Optimal)</span>
+              <span>1.0 (Monotone)</span>
+            </div>
+          </div>
+
+          <!-- SLIDER: SIMILARITY BOOST / CLARITY -->
+          <div class="flex flex-col gap-2 p-3 rounded-xl bg-dark-900/50 border border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-200">Clarity & Similarity Boost</label>
+                <p class="text-[11px] text-slate-400">0.75 – 0.85 ensures technical acronyms (IDE, API, LLM) sound crisp.</p>
+              </div>
+              <span id="similarityVal" class="text-xs font-mono font-bold text-brand-400 bg-brand-950/80 border border-brand-800/50 px-2 py-0.5 rounded">0.80</span>
+            </div>
+            <input type="range" id="similaritySlider" min="0.0" max="1.0" step="0.01" value="0.80" oninput="updateSliderValue('similarity')" class="w-full h-1.5 bg-dark-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>0.0 (Loose)</span>
+              <span class="text-brand-400">0.80 (Crisp)</span>
+              <span>1.0 (Exact)</span>
+            </div>
+          </div>
+
+          <!-- SLIDER: STYLE EXAGGERATION -->
+          <div class="flex flex-col gap-2 p-3 rounded-xl bg-dark-900/50 border border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-200">Style Exaggeration</label>
+                <p class="text-[11px] text-slate-400">0.00 – 0.10 keeps professional tone, avoids artificial dramatic cadence.</p>
+              </div>
+              <span id="styleVal" class="text-xs font-mono font-bold text-brand-400 bg-brand-950/80 border border-brand-800/50 px-2 py-0.5 rounded">0.05</span>
+            </div>
+            <input type="range" id="styleSlider" min="0.0" max="1.0" step="0.01" value="0.05" oninput="updateSliderValue('style')" class="w-full h-1.5 bg-dark-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>0.00 (Neutral)</span>
+              <span class="text-brand-400">0.05 (Subtle)</span>
+              <span>1.00 (Theatrical)</span>
+            </div>
+          </div>
+
+          <!-- SPEAKER BOOST TOGGLE -->
+          <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-dark-900/50 border border-slate-800/80">
+            <div>
+              <span class="text-xs font-semibold text-slate-200">Speaker Boost</span>
+              <p class="text-[11px] text-slate-400">Enhance similarity to original voice</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="speakerBoostCheckbox" checked class="sr-only peer">
+              <div class="w-9 h-5 bg-dark-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-600"></div>
+            </label>
+          </div>
+
+          <!-- BIG ACTION BUTTON -->
+          <button id="generateBtn" onclick="generateAudio()" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-lg shadow-brand-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2 group">
+            <i data-lucide="sparkles" class="w-4 h-4 transition-transform group-hover:rotate-12"></i>
+            <span id="generateBtnText">Generate ElevenLabs Audio</span>
+          </button>
+
+          <!-- GENERATION PROGRESS / LOADING OVERLAY -->
+          <div id="generationProgress" class="hidden flex-col items-center justify-center p-5 rounded-xl bg-dark-900 border border-brand-500/30 text-center gap-3 animate-fadeIn">
+            <div class="flex items-center gap-1.5 h-10">
+              <span class="wave-bar w-1.5 rounded-full bg-brand-500" style="animation-delay: 0.0s;"></span>
+              <span class="wave-bar w-1.5 rounded-full bg-indigo-500" style="animation-delay: 0.15s;"></span>
+              <span class="wave-bar w-1.5 rounded-full bg-brand-400" style="animation-delay: 0.3s;"></span>
+              <span class="wave-bar w-1.5 rounded-full bg-purple-500" style="animation-delay: 0.45s;"></span>
+              <span class="wave-bar w-1.5 rounded-full bg-brand-600" style="animation-delay: 0.6s;"></span>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-200" id="progressStatusText">Submitting request to fal.ai GPU cluster...</p>
+              <p class="text-[11px] text-slate-400 mt-0.5" id="progressTimer">Elapsed: 0.0s</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GENERATION HISTORY / LOG -->
+        <div class="glass-panel rounded-2xl p-4 shadow-xl flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="history" class="w-3.5 h-3.5 text-slate-400"></i>
+              <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Session History</h3>
+            </div>
+            <button onclick="clearHistory()" class="text-[11px] text-slate-500 hover:text-rose-400">Clear</button>
+          </div>
+          <div id="historyList" class="flex flex-col gap-2 max-h-48 overflow-y-auto custom-scrollbar text-xs">
+            <div class="text-slate-600 text-center py-4 text-xs italic">No generations recorded in this session.</div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 glass-panel py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span>ElevenLabs TTS on <a href="https://fal.ai" target="_blank" class="text-brand-400 hover:underline">fal.ai</a></span>
+        <span>•</span>
+        <span>Client-side Secure Execution</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/rifaterdemsahin/elevenlabs" target="_blank" class="text-slate-400 hover:text-white transition">GitHub Repo</a>
+        <a href="https://fal.ai/models" target="_blank" class="text-slate-400 hover:text-white transition">Fal Models</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- API KEY MODAL -->
+  <div id="keyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-700/80 flex flex-col gap-5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-600/20 text-brand-400 flex items-center justify-center border border-brand-500/30">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Fal.ai API Credentials</h3>
+            <p class="text-xs text-slate-400">Stored locally in your browser cookie & storage</p>
+          </div>
+        </div>
+        <button onclick="closeKeyModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-dark-800">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label class="text-xs font-semibold text-slate-300">Fal.ai API Key (`FAL_KEY`)</label>
+        <div class="relative">
+          <input type="password" id="modalKeyInput" class="w-full bg-dark-900 border border-slate-800 focus:border-brand-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500 pr-10" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx...">
+          <button type="button" onclick="toggleKeyVisibility()" class="absolute right-3 top-2.5 text-slate-500 hover:text-slate-300">
+            <i id="eyeIcon" data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-normal">
+          Get your key from <a href="https://fal.ai/dashboard/keys" target="_blank" class="text-brand-400 hover:underline">fal.ai/dashboard/keys</a>. For local development, keys can also be loaded automatically from Azure Key Vault.
+        </p>
+      </div>
+
+      <!-- Key Vault Helper Note -->
+      <div class="p-3 rounded-xl bg-dark-900/60 border border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+        <span class="font-semibold text-slate-300 flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i> Azure Key Vault / Local Environment
+        </span>
+        <p>You can sync your key directly locally by running <code class="text-indigo-300 bg-dark-950 px-1 py-0.5 rounded">./start-local.sh</code> which reads <code class="text-brand-300">FAL-AI-KEY</code> from Azure Key Vault.</p>
+      </div>
+
+      <div id="keyValidationResult" class="hidden p-2.5 rounded-lg text-xs font-medium"></div>
+
+      <div class="flex items-center justify-between gap-3 pt-2">
+        <button type="button" onclick="testApiKey()" id="testKeyBtn" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 transition flex items-center gap-1.5">
+          <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          <span>Test Key</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="clearStoredKey()" class="px-3 py-2 rounded-xl text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition">
+            Clear
+          </button>
+          <button type="button" onclick="saveApiKeyFromModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition shadow-lg shadow-brand-500/20">
+            Save Key
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- STATE MANAGEMENT ---
+    let currentApiKey = '';
+    let generationTimerInterval = null;
+    let generationStartTime = 0;
+    let generationHistory = [];
+
+    const SAMPLE_SCRIPT = `Welcome! In this guide, we're diving into token optimization and cost-control strategies to scale your AI developer tooling... without breaking the bank.
+
+[pause]
+
+Here's a look at my custom I.D.E., built specifically to manage token allocation and model routing in real time. By routing tasks dynamically, running lightweight tools in parallel, and executing agentic file inspections, you maintain complete mastery over your L.L.M. expenditure.
+
+[pause]
+
+Now, if you've ever wondered why your usage dashboard still shows zero percent quota used... three factors are at play:
+
+[pause]
+
+First: Model Tiers. Fast models like Gemini 3.7 Flash in low-reasoning mode consume negligible quota compared to heavier Pro tiers.
+
+Second: Async Metrics. Dashboards often update in rolling windows or asynchronous batches, rather than real-time per token.
+
+And third: A.P.I. Routing. Local tools route via developer A.P.I. keys, tracking against separate backend rate limits rather than standard web interface pools.
+
+[pause]
+
+When structuring agentic workflows, matching the model to the task is key to minimizing latency while preserving accuracy.
+
+Grok low-thinking excels at raw logical deduction, complex algorithm synthesis, and pinpointing state transition bugs with minimal step bloat.
+
+Gemini 3.7 Flash features over a one-million token context window with high-throughput needle retrieval. With a 1588 Web-Dev Arena E.L.O. rating and native multimodal support, it handles full repository scaffolding, U.I. generation, and H.T.M.L. and C.S.S. asset indexing effort-free.
+
+[pause]
+
+The key takeaway? Adjust your reasoning effort settings inside the I.D.E. based on task complexity. Declarative code needs low reasoning overhead; reserve high reasoning for dense logic to keep token burn rates low.
+
+[pause]
+
+Join our Skool community today to access the complete custom I.D.E. source code, download exclusive developer resources, and book your one-on-one coaching sessions!`;
+
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initKey();
+      setupEventListeners();
+      
+      // If script is empty, populate sample script
+      if (!document.getElementById('scriptInput').value.trim()) {
+        loadSampleScript();
+      }
+      updateStats();
+    });
+
+    // --- COOKIE & STORAGE HELPERS ---
+    function setCookie(name, value, days = 30) {
+      const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+    }
+
+    function getCookie(name) {
+      return document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
+        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+      }, '');
+    }
+
+    function deleteCookie(name) {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+    }
+
+    // --- API KEY HANDLING ---
+    function initKey() {
+      // 1. Check URL parameters (?key=... or ?fal_key=...)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlKey = urlParams.get('key') || urlParams.get('fal_key') || urlParams.get('FAL_KEY');
+      
+      if (urlKey) {
+        currentApiKey = urlKey.trim();
+        setCookie('fal_key', currentApiKey);
+        localStorage.setItem('fal_api_key', currentApiKey);
+        // Clean URL to prevent accidental key exposure
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else {
+        // 2. Check Cookie
+        const cookieKey = getCookie('fal_key') || getCookie('FAL_KEY');
+        if (cookieKey) {
+          currentApiKey = cookieKey.trim();
+        } else {
+          // 3. Check LocalStorage
+          const storedKey = localStorage.getItem('fal_api_key');
+          if (storedKey) {
+            currentApiKey = storedKey.trim();
+            setCookie('fal_key', currentApiKey);
+          }
+        }
+      }
+
+      updateKeyUI();
+    }
+
+    function updateKeyUI() {
+      const dot = document.getElementById('keyStatusDot');
+      const text = document.getElementById('keyStatusText');
+      const banner = document.getElementById('keyNoticeBanner');
+      const input = document.getElementById('modalKeyInput');
+
+      if (currentApiKey && currentApiKey.length > 5) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        const masked = currentApiKey.substring(0, 4) + '...' + currentApiKey.substring(currentApiKey.length - 4);
+        text.innerText = `Key: ${masked}`;
+        banner.classList.add('hidden');
+        if (input) input.value = currentApiKey;
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        text.innerText = 'API Key Required';
+        banner.classList.remove('hidden');
+        if (input) input.value = '';
+      }
+    }
+
+    function openKeyModal() {
+      document.getElementById('modalKeyInput').value = currentApiKey;
+      document.getElementById('keyValidationResult').classList.add('hidden');
+      document.getElementById('keyModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeKeyModal() {
+      document.getElementById('keyModal').classList.add('hidden');
+    }
+
+    function toggleKeyVisibility() {
+      const input = document.getElementById('modalKeyInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    function saveApiKeyFromModal() {
+      const val = document.getElementById('modalKeyInput').value.trim();
+      if (!val) {
+        alert('Please enter a valid Fal.ai API key.');
+        return;
+      }
+      currentApiKey = val;
+      setCookie('fal_key', currentApiKey, 30);
+      localStorage.setItem('fal_api_key', currentApiKey);
+      updateKeyUI();
+      closeKeyModal();
+    }
+
+    function clearStoredKey() {
+      currentApiKey = '';
+      deleteCookie('fal_key');
+      deleteCookie('FAL_KEY');
+      localStorage.removeItem('fal_api_key');
+      document.getElementById('modalKeyInput').value = '';
+      updateKeyUI();
+      closeKeyModal();
+    }
+
+    async function testApiKey() {
+      const testKey = document.getElementById('modalKeyInput').value.trim();
+      const resBox = document.getElementById('keyValidationResult');
+      const btn = document.getElementById('testKeyBtn');
+
+      if (!testKey) {
+        resBox.className = 'p-2.5 rounded-lg text-xs font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        resBox.innerText = 'Please enter a key to test.';
+        resBox.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Testing...</span>';
+      lucide.createIcons();
+
+      try {
+        // Test lightweight query to fal.ai
+        const response = await fetch('https://fal.run/fal-ai/elevenlabs/tts/turbo-v2.5', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Key ${testKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            text: 'Key validation ping',
+            voice: 'Adam'
+          })
+        });
+
+        if (response.ok) {
+          resBox.className = 'p-2.5 rounded-lg text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          resBox.innerText = '✓ Key is valid and active on fal.ai!';
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          resBox.className = 'p-2.5 rounded-lg text-xs font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30';
+          resBox.innerText = `✗ Key error (${response.status}): ${errData.detail || response.statusText}`;
+        }
+      } catch (err) {
+        resBox.className = 'p-2.5 rounded-lg text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        resBox.innerText = `Test error: ${err.message}`;
+      } finally {
+        resBox.classList.remove('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>Test Key</span>';
+        lucide.createIcons();
+      }
+    }
+
+    // --- EVENT LISTENERS & STATS ---
+    function setupEventListeners() {
+      const scriptInput = document.getElementById('scriptInput');
+      scriptInput.addEventListener('input', updateStats);
+    }
+
+    function updateStats() {
+      const text = document.getElementById('scriptInput').value;
+      const charCount = text.length;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      
+      document.getElementById('charCount').innerText = charCount.toLocaleString();
+      document.getElementById('wordCount').innerText = words.toLocaleString();
+
+      // Estimate ~145 words per minute for narration
+      const totalSeconds = Math.round((words / 145) * 60);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      const durStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+      document.getElementById('estDuration').innerText = durStr;
+    }
+
+    // --- SCRIPT UTILITIES ---
+    function loadSampleScript() {
+      document.getElementById('scriptInput').value = SAMPLE_SCRIPT;
+      
+      // Set the recommended ElevenLabs parameters for this technical voiceover
+      document.getElementById('modelSelect').value = 'fal-ai/elevenlabs/tts/eleven-v3';
+      document.getElementById('voiceSelect').value = 'Adam';
+      document.getElementById('stabilitySlider').value = '0.50';
+      document.getElementById('similaritySlider').value = '0.80';
+      document.getElementById('styleSlider').value = '0.05';
+      document.getElementById('speakerBoostCheckbox').checked = true;
+
+      updateSliderValue('stability');
+      updateSliderValue('similarity');
+      updateSliderValue('style');
+      onModelChange();
+      onVoiceChange();
+      updateStats();
+    }
+
+    function clearScript() {
+      if (confirm('Clear the script editor?')) {
+        document.getElementById('scriptInput').value = '';
+        updateStats();
+      }
+    }
+
+    function insertPause() {
+      insertAtCursor('\n\n[pause]\n\n');
+    }
+
+    function insertTag(tag) {
+      insertAtCursor(`${tag} `);
+    }
+
+    function insertAtCursor(textToInsert) {
+      const textarea = document.getElementById('scriptInput');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+
+      textarea.value = text.substring(0, start) + textToInsert + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + textToInsert.length;
+      updateStats();
+    }
+
+    function formatAcronyms() {
+      const textarea = document.getElementById('scriptInput');
+      let text = textarea.value;
+      
+      const replacements = [
+        [/\bIDE\b/g, 'I.D.E.'],
+        [/\bLLM\b/g, 'L.L.M.'],
+        [/\bLLMs\b/g, 'L.L.M.s'],
+        [/\bAPI\b/g, 'A.P.I.'],
+        [/\bAPIs\b/g, 'A.P.I.s'],
+        [/\bUI\b/g, 'U.I.'],
+        [/\bHTML\b/g, 'H.T.M.L.'],
+        [/\bCSS\b/g, 'C.S.S.'],
+        [/\bELO\b/g, 'E.L.O.'],
+        [/\bTTS\b/g, 'T.T.S.'],
+        [/\bGPU\b/g, 'G.P.U.'],
+        [/\bGPUs\b/g, 'G.P.U.s'],
+        [/\bAI\b/g, 'A.I.']
+      ];
+
+      for (const [pattern, rep] of replacements) {
+        text = text.replace(pattern, rep);
+      }
+
+      textarea.value = text;
+      updateStats();
+    }
+
+    // --- SETTINGS CONTROLS ---
+    function updateSliderValue(type) {
+      if (type === 'stability') {
+        const val = parseFloat(document.getElementById('stabilitySlider').value).toFixed(2);
+        document.getElementById('stabilityVal').innerText = val;
+      } else if (type === 'similarity') {
+        const val = parseFloat(document.getElementById('similaritySlider').value).toFixed(2);
+        document.getElementById('similarityVal').innerText = val;
+      } else if (type === 'style') {
+        const val = parseFloat(document.getElementById('styleSlider').value).toFixed(2);
+        document.getElementById('styleVal').innerText = val;
+      }
+    }
+
+    function onModelChange() {
+      const val = document.getElementById('modelSelect').value;
+      const tag = document.getElementById('modelTag');
+      if (val.includes('eleven-v3')) {
+        tag.innerText = 'Expressive + Audio Tags';
+        tag.className = 'text-[11px] text-brand-400';
+      } else if (val.includes('turbo')) {
+        tag.innerText = 'Ultra-Fast & Crisp';
+        tag.className = 'text-[11px] text-emerald-400';
+      } else {
+        tag.innerText = 'Classic Standard';
+        tag.className = 'text-[11px] text-indigo-400';
+      }
+    }
+
+    function onVoiceChange() {
+      const voiceSelect = document.getElementById('voiceSelect');
+      const customInput = document.getElementById('customVoiceInput');
+      const voiceDesc = document.getElementById('voiceDesc');
+
+      const descriptions = {
+        'Adam': 'Authoritative / Deep / Technical Narration',
+        'Brian': 'Deep / Resonant / Technical Explainer',
+        'Antoni': 'Dynamic / Well-rounded / Crisp',
+        'Daniel': 'British / Authoritative / News Delivery',
+        'Rachel': 'Calm / Professional / Assistant',
+        'Charlie': 'Australian / Casual / Conversational',
+        'Liam': 'American / Youthful / Articulate',
+        'Matilda': 'Warm / Friendly / Engaging',
+        'Callum': 'Intense / Storytelling',
+        'George': 'British / Warm / Storyteller',
+        'Domi': 'Strong / Energetic',
+        'Emily': 'Calm / Gentle',
+        'Paul': 'Grounded / Announcer',
+        'Sam': 'Dynamic / Raspy',
+        'custom': 'Custom Voice identifier'
+      };
+
+      if (voiceSelect.value === 'custom') {
+        customInput.classList.remove('hidden');
+        customInput.focus();
+        voiceDesc.innerText = 'Custom Voice identifier';
+      } else {
+        customInput.classList.add('hidden');
+        voiceDesc.innerText = descriptions[voiceSelect.value] || 'ElevenLabs Voice';
+      }
+    }
+
+    function resetDefaultSettings() {
+      document.getElementById('modelSelect').value = 'fal-ai/elevenlabs/tts/eleven-v3';
+      document.getElementById('voiceSelect').value = 'Adam';
+      document.getElementById('stabilitySlider').value = '0.50';
+      document.getElementById('similaritySlider').value = '0.80';
+      document.getElementById('styleSlider').value = '0.05';
+      document.getElementById('speakerBoostCheckbox').checked = true;
+      
+      updateSliderValue('stability');
+      updateSliderValue('similarity');
+      updateSliderValue('style');
+      onModelChange();
+      onVoiceChange();
+    }
+
+    // --- AUDIO GENERATION ENGINE ---
+    async function generateAudio() {
+      const scriptText = document.getElementById('scriptInput').value.trim();
+      if (!scriptText) {
+        alert('Please enter or load a voiceover script.');
+        return;
+      }
+
+      if (!currentApiKey) {
+        openKeyModal();
+        return;
+      }
+
+      const model = document.getElementById('modelSelect').value;
+      const voiceSelectVal = document.getElementById('voiceSelect').value;
+      const customVoice = document.getElementById('customVoiceInput').value.trim();
+      const voice = (voiceSelectVal === 'custom' && customVoice) ? customVoice : voiceSelectVal;
+      
+      const stability = parseFloat(document.getElementById('stabilitySlider').value);
+      const similarity_boost = parseFloat(document.getElementById('similaritySlider').value);
+      const style = parseFloat(document.getElementById('styleSlider').value);
+      const use_speaker_boost = document.getElementById('speakerBoostCheckbox').checked;
+
+      // Start UI Loading State
+      setGeneratingState(true);
+
+      const requestPayload = {
+        text: scriptText,
+        voice: voice,
+        stability: stability,
+        similarity_boost: similarity_boost,
+        style: style,
+        use_speaker_boost: use_speaker_boost
+      };
+
+      try {
+        updateProgressText(`Calling fal.ai (${model.split('/').pop()})...`);
+
+        // Send direct execution request to fal.run
+        const response = await fetch(`https://fal.run/${model}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Key ${currentApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestPayload)
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.detail || `Server returned ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const durationSec = ((Date.now() - generationStartTime) / 1000).toFixed(1);
+
+        if (data.audio && data.audio.url) {
+          handleGenerationSuccess(data.audio, {
+            voice,
+            model,
+            stability,
+            similarity_boost,
+            style,
+            durationSec,
+            scriptSnippet: scriptText.substring(0, 60) + '...'
+          });
+        } else {
+          throw new Error('No audio URL found in the response payload.');
+        }
+
+      } catch (err) {
+        console.error('Generation Error:', err);
+        handleGenerationError(err);
+      } finally {
+        setGeneratingState(false);
+      }
+    }
+
+    function setGeneratingState(isGenerating) {
+      const genBtn = document.getElementById('generateBtn');
+      const genBtnText = document.getElementById('generateBtnText');
+      const progressBox = document.getElementById('generationProgress');
+      const statusBadge = document.getElementById('outputStatusBadge');
+
+      if (isGenerating) {
+        genBtn.disabled = true;
+        genBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        genBtnText.innerText = 'Generating Voiceover...';
+        progressBox.classList.remove('hidden');
+        statusBadge.innerText = 'Generating...';
+        statusBadge.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+
+        generationStartTime = Date.now();
+        generationTimerInterval = setInterval(() => {
+          const elapsed = ((Date.now() - generationStartTime) / 1000).toFixed(1);
+          document.getElementById('progressTimer').innerText = `Elapsed: ${elapsed}s`;
+        }, 100);
+      } else {
+        genBtn.disabled = false;
+        genBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        genBtnText.innerText = 'Generate ElevenLabs Audio';
+        progressBox.classList.add('hidden');
+        if (generationTimerInterval) clearInterval(generationTimerInterval);
+      }
+    }
+
+    function updateProgressText(msg) {
+      document.getElementById('progressStatusText').innerText = msg;
+    }
+
+    function handleGenerationSuccess(audioData, meta) {
+      const statusBadge = document.getElementById('outputStatusBadge');
+      statusBadge.innerText = `Generated in ${meta.durationSec}s`;
+      statusBadge.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+
+      document.getElementById('playerPlaceholder').classList.add('hidden');
+      const activePlayer = document.getElementById('playerActive');
+      activePlayer.classList.remove('hidden');
+      activePlayer.classList.add('flex');
+
+      const audioEl = document.getElementById('audioElement');
+      audioEl.src = audioData.url;
+      audioEl.load();
+      audioEl.play().catch(() => {}); // Auto-play if allowed by browser policy
+
+      const downloadBtn = document.getElementById('downloadAudioBtn');
+      downloadBtn.href = audioData.url;
+      downloadBtn.download = `elevenlabs-${meta.voice.toLowerCase()}-${Date.now()}.mp3`;
+
+      // Meta tags
+      const metaContainer = document.getElementById('audioMetaDetails');
+      const sizeKB = audioData.file_size ? `${Math.round(audioData.file_size / 1024)} KB` : '';
+      metaContainer.innerHTML = `
+        <span class="px-2 py-0.5 rounded bg-dark-900 border border-slate-800 font-mono text-[11px] text-brand-300">${meta.voice}</span>
+        <span class="px-2 py-0.5 rounded bg-dark-900 border border-slate-800 font-mono text-[11px] text-slate-300">${meta.model.split('/').pop()}</span>
+        ${sizeKB ? `<span class="text-[11px] text-slate-500">${sizeKB}</span>` : ''}
+      `;
+
+      // Add to Session History
+      addToHistory(audioData.url, meta);
+      lucide.createIcons();
+    }
+
+    function handleGenerationError(err) {
+      const statusBadge = document.getElementById('outputStatusBadge');
+      statusBadge.innerText = 'Generation Failed';
+      statusBadge.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30';
+
+      alert(`Audio generation failed: ${err.message}\n\nPlease verify your FAL API Key, voice parameter, and network connection.`);
+    }
+
+    function copyAudioUrl() {
+      const audioEl = document.getElementById('audioElement');
+      if (!audioEl.src) return;
+
+      navigator.clipboard.writeText(audioEl.src).then(() => {
+        const btnText = document.getElementById('copyBtnText');
+        btnText.innerText = 'Copied!';
+        setTimeout(() => { btnText.innerText = 'Copy Audio Link'; }, 2000);
+      });
+    }
+
+    // --- HISTORY MANAGEMENT ---
+    function addToHistory(url, meta) {
+      generationHistory.unshift({
+        url,
+        meta,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('historyList');
+      if (generationHistory.length === 0) {
+        container.innerHTML = '<div class="text-slate-600 text-center py-4 text-xs italic">No generations recorded in this session.</div>';
+        return;
+      }
+
+      container.innerHTML = generationHistory.map((item, idx) => `
+        <div class="p-2.5 rounded-xl bg-dark-900/70 border border-slate-800 hover:border-slate-700 transition flex items-center justify-between gap-2">
+          <div class="flex flex-col gap-0.5 overflow-hidden">
+            <div class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-300">
+              <span class="text-brand-400 font-mono">${item.meta.voice}</span>
+              <span>•</span>
+              <span class="text-slate-500 text-[10px]">${item.time} (${item.meta.durationSec}s)</span>
+            </div>
+            <p class="text-[11px] text-slate-400 truncate max-w-[200px] sm:max-w-xs">${item.meta.scriptSnippet}</p>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="playHistoryItem('${item.url}')" title="Play audio" class="p-1.5 rounded-lg bg-dark-800 hover:bg-dark-750 text-slate-300 hover:text-white border border-slate-700 transition">
+              <i data-lucide="play" class="w-3 h-3"></i>
+            </button>
+            <a href="${item.url}" target="_blank" download title="Download MP3" class="p-1.5 rounded-lg bg-dark-800 hover:bg-dark-750 text-slate-300 hover:text-emerald-400 border border-slate-700 transition">
+              <i data-lucide="download" class="w-3 h-3"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function playHistoryItem(url) {
+      document.getElementById('playerPlaceholder').classList.add('hidden');
+      const activePlayer = document.getElementById('playerActive');
+      activePlayer.classList.remove('hidden');
+      activePlayer.classList.add('flex');
+
+      const audioEl = document.getElementById('audioElement');
+      audioEl.src = url;
+      audioEl.load();
+      audioEl.play();
+    }
+
+    function clearHistory() {
+      generationHistory = [];
+      renderHistory();
+    }
+  </script>
+</body>
+</html>
