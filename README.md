@@ -1,12 +1,32 @@
 # ElevenLabs Voice Studio — Powered by fal.ai
 
-A client-side studio for generating speech using **ElevenLabs models** (Eleven v3, Turbo v2.5, Multilingual v2) running on **fal.ai** serverless GPU infrastructure.
+A comprehensive client-side studio for generating speech using **ElevenLabs models** (Eleven v3, Turbo v2.5, Multilingual v2) running on **fal.ai** serverless GPU infrastructure and direct ElevenLabs API.
 
-Deployed directly to GitHub Pages: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
+Deployed directly to GitHub Pages:
+- **Standard Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
+- **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 
 ---
 
-## ✨ Features
+## 🎙️ Rifat Erdem Sahin — Cloned Voice Studio
+
+A dedicated workspace built for Rifat Erdem Sahin's personal trained voice clone:
+- **Cloned Voice Page**: [`cloned-voice.html`](cloned-voice.html)
+- **Interactive 5-Step Guide**: Clear instructions on training the voice in ElevenLabs VoiceLab, obtaining the `voice_id`, and generating custom voiceovers.
+- **Custom Voice ID Persistence**: Stores your personal `voice_id` directly in cookies/storage.
+- **Dual Execution Backend**: Supports both `fal.ai` serverless GPU endpoint and direct ElevenLabs `v1/text-to-speech` API.
+- **Optimized Tuning Defaults**: Fine-tuned similarity boost (`0.85`), stability (`0.50`), and style exaggeration (`0.03`) to match Erdem's voice cadence and accent.
+
+### 📋 Checklist for Erdem to Activate His Cloned Voice:
+1. **Record Clean Audio**: 1–3 clean voice clips (2–5 minutes) without background noise or echo.
+2. **Train on ElevenLabs**: Go to [ElevenLabs VoiceLab](https://elevenlabs.io/app/voice-lab) &gt; **+ Add Generative or Cloned Voice** &gt; **Instant Voice Cloning**.
+3. **Copy Voice ID**: Copy the generated `voice_id` from your voice card in VoiceLab.
+4. **Paste into Cloned Voice Studio**: Enter the `voice_id` into the **Cloned Voice Profile** input and click **Save to Cookie**.
+5. **Generate Voiceover**: Select your script or preset and click **Generate Erdem Voiceover**.
+
+---
+
+## ✨ Features (Standard Studio)
 
 - **Model Architectures**:
   - `fal-ai/elevenlabs/tts/eleven-v3`: High expressiveness with inline audio tags (`[excited]`, `[whispers]`, `[slowly]`, `[firm]`, `[pause]`).
@@ -50,25 +70,6 @@ Open `http://localhost:8080` in **Google Chrome**.
 ## 🌐 GitHub Pages Deployment
 
 The application is hosted on GitHub Pages:
-- **Live URL**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
+- **Main Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
+- **Erdem Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 - Automatically updates on push to `main` branch.
-
----
-
-## ⚙️ Sample Voiceover & Configuration
-
-```text
-Welcome! In this guide, we're diving into token optimization and cost-control strategies to scale your AI developer tooling... without breaking the bank.
-
-[pause]
-
-Here's a look at my custom I.D.E., built specifically to manage token allocation and model routing in real time. By routing tasks dynamically, running lightweight tools in parallel, and executing agentic file inspections, you maintain complete mastery over your L.L.M. expenditure.
-...
-```
-
-**Recommended Settings:**
-- **Voice**: `Adam` or `Brian`
-- **Stability**: `0.50`
-- **Clarity / Similarity**: `0.80`
-- **Style Exaggeration**: `0.05`
-- **Model**: `Eleven Multilingual v3` or `Turbo v2.5`
