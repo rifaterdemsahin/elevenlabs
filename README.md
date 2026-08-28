@@ -6,6 +6,7 @@ Deployed directly to GitHub Pages:
 - **Standard Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
 - **Day One Player** (How an LLM Actually Reads): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
 - **Abundance Player** (Abundance is a Platform): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
+- **Human Leverage Player** (Abundance is a Platform v2): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/)
 - **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 
 ---
@@ -75,5 +76,6 @@ The application is hosted on GitHub Pages:
 - **Main Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
 - **Day One Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
 - **Abundance Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
+- **Human Leverage Player** (v2): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/)
 - **Erdem Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 - Automatically updates on push to `main` branch.
