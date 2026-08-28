@@ -5,6 +5,7 @@ A comprehensive client-side studio for generating speech using **ElevenLabs mode
 Deployed directly to GitHub Pages:
 - **Standard Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
 - **Day One Player** (How an LLM Actually Reads): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
+- **Abundance Player** (Abundance is a Platform): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
 - **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 
 ---
@@ -73,5 +74,6 @@ Open `http://localhost:8080` in **Google Chrome**.
 The application is hosted on GitHub Pages:
 - **Main Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
 - **Day One Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
+- **Abundance Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
 - **Erdem Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 - Automatically updates on push to `main` branch.
