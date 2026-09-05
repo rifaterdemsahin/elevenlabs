@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Assembly & Fix Guide: Speaker 1 (AI) ➔ Speaker 2 (Rifat Human)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f7ff',
+              100: '#ebf0fe',
+              200: '#d6e0fd',
+              300: '#b3c7fc',
+              400: '#8aa6f9',
+              500: '#6382f6',
+              600: '#4f66ee',
+              700: '#3f4fd6',
+              800: '#3341ad',
+              900: '#2d3888',
+              950: '#1b2152',
+            },
+            dark: {
+              950: '#07090e',
+              900: '#0c1017',
+              850: '#111722',
+              800: '#171f2e',
+              750: '#1d273a',
+              700: '#26334a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(circle at 10% 12%, rgba(99, 130, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 18%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      border-radius: 4px;
+    }
+    .glass-panel {
+      background: rgba(17, 23, 34, 0.84);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(23, 31, 46, 0.70);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .track-ai {
+      background: rgba(99, 130, 246, 0.15);
+      border-left: 4px solid #3b82f6;
+    }
+    .track-human {
+      background: rgba(16, 185, 129, 0.15);
+      border-left: 4px solid #10b981;
+    }
+    .track-transition {
+      background: rgba(245, 158, 11, 0.15);
+      border-left: 4px solid #f59e0b;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 antialiased flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-slate-800/80 glass-panel sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-amber-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-brand-500/20 ring-1 ring-white/20">
+          <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">Timeline Fix Guide: Video 1.1 Workshop</h1>
+            <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-brand-500/10 text-brand-300 border border-brand-500/30">Speaker 1: AI ➔ Speaker 2: Rifat Human</span>
+          </div>
+          <p class="text-xs text-slate-400">Step-by-step NLE Video & Audio Layer Placement Blueprint</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <a href="video-1-1-shotlist.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 transition">
+          <i data-lucide="clapperboard" class="w-3.5 h-3.5"></i>
+          <span>Shot List</span>
+        </a>
+        <a href="video-1-1-audit-refactor.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 transition">
+          <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+          <span>Script Autopsy</span>
+        </a>
+        <a href="dual-persona-framework.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 transition">
+          <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+          <span>Dual Persona</span>
+        </a>
+        <a href="index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="home" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Studio Home</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 space-y-10">
+
+    <!-- HERO / QUICK FIX SUMMARY -->
+    <div class="relative overflow-hidden rounded-2xl glass-panel p-8 sm:p-10 border border-brand-500/30">
+      <div class="max-w-4xl space-y-4 relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-300 border border-brand-500/30">
+          <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+          <span>Current Video Remediation Blueprint</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+          How to Fix Your Current Video: <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-purple-300 to-emerald-400">Speaker 1: AI (0:00–2:00) ➔ Speaker 2: Rifat Human (2:00–5:00)</span>
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Here is the exact assembly blueprint for your editing software (DaVinci Resolve / Premiere Pro / CapCut). Follow this track-by-track guide to drop the AI voice on top of Google Flow, cut out the bloopers, and anchor Rifat Human in the live coding sandbox.
+        </p>
+
+        <!-- The 3 Step Fix Rule -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-brand-500/40 space-y-1">
+            <span class="font-bold text-brand-400 font-mono">1. SPEAKER 1 (AI)</span>
+            <p class="text-slate-300">Place ElevenLabs studio audio over Google Flow diagrams & Delimiter comparison (0:00 – 2:00).</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-amber-500/40 space-y-1">
+            <span class="font-bold text-amber-400 font-mono">2. THE 2:00 BATON PASS</span>
+            <p class="text-slate-300">Insert 1.0s silence + riser effect. Morph Google Flow into top-right; expand VS Code to 80%.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-emerald-500/40 space-y-1">
+            <span class="font-bold text-emerald-400 font-mono">3. SPEAKER 2 (RIFAT HUMAN)</span>
+            <p class="text-slate-300">Rifat live coding on mic (2:00 – 4:45). Delete trailing 04:01 blooper. End with clean CTA at 5:00.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: NLE TIMELINE TRACK STACK (WHAT GOES ON EACH TRACK) -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="layout-grid" class="w-5 h-5 text-brand-400"></i>
+          1. NLE Timeline Track Stack (Visual & Audio Layering)
+        </h2>
+        <p class="text-xs text-slate-400">Exact layout of your Video Tracks (V1, V2, V3) and Audio Tracks (A1, A2, A3) in your video editor.</p>
+      </div>
+
+      <div class="glass-panel p-6 rounded-xl space-y-3 font-mono text-xs">
+        
+        <!-- Video Track 3 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-purple-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">V3 (Top)</span>
+            <span class="text-slate-300">On-Screen Text Callouts & Lower Thirds (`AI Architecture` ➔ `Instructor Lab: Rifat Erdem Sahin`)</span>
+          </div>
+          <span class="text-[10px] text-slate-400">Titles & Motion Graphics</span>
+        </div>
+
+        <!-- Video Track 2 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-emerald-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">V2</span>
+            <span class="text-slate-300">Rifat Human Webcam Circle (Bottom-Left 20%) — Visible from 02:00 to 05:00</span>
+          </div>
+          <span class="text-[10px] text-emerald-400">Floating Facecam</span>
+        </div>
+
+        <!-- Video Track 1 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-slate-700 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">V1 (Base)</span>
+            <span class="text-slate-300">0:00–2:00 Google Flow & Split Diff ➔ 2:00–5:00 VS Code Screencast (80%)</span>
+          </div>
+          <span class="text-[10px] text-slate-400">Main Screen Capture</span>
+        </div>
+
+        <div class="border-t border-slate-800 my-2"></div>
+
+        <!-- Audio Track 1 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-blue-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">A1</span>
+            <span class="text-slate-300 font-bold text-blue-300">Speaker 1: AI (ElevenLabs Audio)</span> — Plays 0:00 to 02:00 (-14 LUFS)
+          </div>
+          <span class="text-[10px] text-blue-400">AI Voiceover</span>
+        </div>
+
+        <!-- Audio Track 2 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-emerald-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">A2</span>
+            <span class="text-slate-300 font-bold text-emerald-300">Speaker 2: Rifat Human (Microphone Audio)</span> — Plays 02:01 to 05:00 (-14 LUFS)
+          </div>
+          <span class="text-[10px] text-emerald-400">Rifat Live Mic</span>
+        </div>
+
+        <!-- Audio Track 3 -->
+        <div class="p-3 rounded-lg bg-dark-950 border border-amber-500/30 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">A3</span>
+            <span class="text-slate-300">Lo-Fi Ambient Bed (-24dB ducked) + Whoosh / Riser at 2:00 (-14dB swell)</span>
+          </div>
+          <span class="text-[10px] text-amber-400">Music & SFX</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: EXACT TIMELINE ASSEMBLY TABLE -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="film" class="w-5 h-5 text-emerald-400"></i>
+          2. Master Placement Table: What to Place on Screen & Timeline
+        </h2>
+        <p class="text-xs text-slate-400">Line-by-line roadmap of visual elements, audio cues, cuts, and overlays.</p>
+      </div>
+
+      <div class="space-y-4" id="timelineFixContainer">
+        <!-- Injected by JS below -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHAT TO CUT & DELETE LIST -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="scissors" class="w-5 h-5 text-rose-400"></i>
+          3. Explicit Cut & Delete List for Current Video
+        </h2>
+        <p class="text-xs text-slate-400">Remove these sections from your raw timeline to eliminate bloopers and cringe.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        
+        <div class="glass-card p-5 rounded-xl border border-rose-900/50 space-y-2">
+          <div class="font-bold text-rose-400 flex items-center gap-1.5">
+            <i data-lucide="trash-2" class="w-4 h-4"></i> Cut 1: The Premature Outro
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            <strong>Delete at 04:01:</strong> Cut the line <em>"See you in video 1.2."</em> because it occurs before the live code explanation finishes.
+          </p>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-rose-900/50 space-y-2">
+          <div class="font-bold text-rose-400 flex items-center gap-1.5">
+            <i data-lucide="trash-2" class="w-4 h-4"></i> Cut 2: The Blooper Restart
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            <strong>Delete 04:03 – 04:45:</strong> Cut the trailing unedited take (<em>"Let's look at how we are going to do the example... bits and pieces for you guys..."</em>).
+          </p>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-rose-900/50 space-y-2">
+          <div class="font-bold text-rose-400 flex items-center gap-1.5">
+            <i data-lucide="trash-2" class="w-4 h-4"></i> Cut 3: Vague Phrasing Audio
+          </div>
+          <p class="text-slate-300 leading-relaxed">
+            <strong>Replace 00:55 – 01:36:</strong> Replace the awkward audio (*"hashes with curly braces"*, *"bigger than and smaller than signs"*) with <strong>Speaker 1 (AI)</strong> crisp narration.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 glass-panel mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Rifat Erdem Sahin — Timeline Assembly System</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="video-1-1-shotlist.html" class="hover:text-slate-300 transition">Shot List</a>
+        <a href="video-1-1-audit-refactor.html" class="hover:text-slate-300 transition">Script Autopsy</a>
+        <a href="dual-persona-framework.html" class="hover:text-slate-300 transition">Dual Persona</a>
+        <a href="index.html" class="hover:text-slate-300 transition">TTS Engine</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    const placementData = [
+      {
+        timestamp: "00:00 - 00:45",
+        act: "TELL (Concept Phase)",
+        speaker: "Speaker 1: AI (ElevenLabs)",
+        trackClass: "track-ai",
+        badgeColor: "blue",
+        visualPlacement: "Full-Screen Google Flow Canvas (V1). Spotlight zoom across 4 nodes: Role, Context, Task, Constraints.",
+        audioPlacement: "Drop AI Voiceover audio file on Track A1: 'Welcome to Module 1.1... clarity isn't just about good grammar, it is software architecture.'",
+        overlayText: "Lower Third: [AI Architecture Blueprint • Core Prompting Principles]",
+        editingAction: "Keep pan speed smooth (60fps). Add glowing border on active nodes."
+      },
+      {
+        timestamp: "00:45 - 01:40",
+        act: "SHOW (Delimiter Blueprint)",
+        speaker: "Speaker 1: AI (ElevenLabs)",
+        trackClass: "track-ai",
+        badgeColor: "blue",
+        visualPlacement: "3 Visual Graphic Cards (V1): Card 1 (Markdown ###), Card 2 (JSON { }), Card 3 (XML <context> tags).",
+        audioPlacement: "AI Voiceover Track A1: 'Let's examine the three standard structured delimiter patterns: Markdown, JSON object schemas, and XML tags.'",
+        overlayText: "Callout Badge: [Markdown vs JSON vs XML Delimiters]",
+        editingAction: "Cut out raw dialogue about 'bigger than smaller than signs'. Replace with clean AI audio."
+      },
+      {
+        timestamp: "01:40 - 02:00",
+        act: "SHOW (Split Diff & Handoff)",
+        speaker: "Speaker 1: AI (ElevenLabs)",
+        trackClass: "track-ai",
+        badgeColor: "blue",
+        visualPlacement: "Side-by-Side Split Diff (V1): Left side (Red border) = Messy unstructured prompt. Right side (Green border) = XML <context> prompt returning clean JSON.",
+        audioPlacement: "AI Voiceover Track A1: 'On the right, we wrap the request in explicit XML tags... Now let's pass execution to Erdem in the IDE to build this live.'",
+        overlayText: "Split Comparison: [Unstructured Essay ➔ Deterministic JSON Schema]",
+        editingAction: "Visual morph cue at 1:59 preparing for handoff."
+      },
+      {
+        timestamp: "02:00 - 02:01",
+        act: "THE BATON PASS",
+        speaker: "Sound Design (Transition)",
+        trackClass: "track-transition",
+        badgeColor: "amber",
+        visualPlacement: "Layout Morph: Google Flow collapses into a 20% mini-card in top-right. VS Code expands to 80% screen width. Rifat Human webcam circle fades in bottom-left.",
+        audioPlacement: "1.0s Strategic Silence on speech tracks. Lo-Fi music swells to -14dB with whoosh sound effect on Track A3.",
+        overlayText: "Badge Slides In: [Instructor Live Lab • Rifat Erdem Sahin]",
+        editingAction: "Zero speech for 1.0 full second. Creates attention reset."
+      },
+      {
+        timestamp: "02:01 - 03:45",
+        act: "DO (Live Code & Edge Cases)",
+        speaker: "Speaker 2: Rifat Human (Live Mic)",
+        trackClass: "track-human",
+        badgeColor: "emerald",
+        visualPlacement: "80% VS Code screencast + 20% Rifat Human webcam circle (V2). Close-up zoom on code editor as Rifat types `### System Role` and wraps text in `<transcript>` XML tags.",
+        audioPlacement: "Rifat Live Microphone on Track A2: 'Thanks AI! Alright everyone, let's open VS Code and build an enterprise meeting notes extractor...'",
+        overlayText: "Code Callout Line 24: [Negative Constraint: \"output null if deadline unknown\"]",
+        editingAction: "Run script in terminal. Highlight green JSON output on screen. Add zoom punch (115%) on terminal output."
+      },
+      {
+        timestamp: "03:45 - 04:45",
+        act: "APPLY (Student Mission)",
+        speaker: "Speaker 2: Rifat Human (Live Mic)",
+        trackClass: "track-human",
+        badgeColor: "emerald",
+        visualPlacement: "Screen capture of GitHub Course Workspace: `exercise-1-1-prompt-refactor` README + 3-point interactive checklist graphic (V1/V3).",
+        audioPlacement: "Rifat Human Track A2: 'Now it is your turn to apply this! Launch Exercise 1.1 in your workspace. Restructure the enterprise prompts...'",
+        overlayText: "Mission Checklist: [1. 4 Pillars • 2. XML Tags • 3. Schema Validated]",
+        editingAction: "Display clickable GitHub starter repository link overlay."
+      },
+      {
+        timestamp: "04:45 - 05:00",
+        act: "OUTRO (True Closing)",
+        speaker: "Speaker 2: Rifat Human Direct-to-Camera",
+        trackClass: "track-human",
+        badgeColor: "emerald",
+        visualPlacement: "Full-Screen Rifat Human camera (A-Roll) smiling and pointing to comments below, followed by YouTube End Screen Card (V1).",
+        audioPlacement: "Rifat Human Track A2: 'Master this pattern, and you command enterprise AI engineering. Submit your repo in the comments, and I will see you in Video 1.2!'",
+        overlayText: "Next Episode Card: [Next: Video 1.2 — Multi-Shot Prompting]",
+        editingAction: "Music fades out smoothly. End video cleanly at exactly 05:00. Blooper is gone!"
+      }
+    ];
+
+    function renderTimelineFix() {
+      const container = document.getElementById('timelineFixContainer');
+      container.innerHTML = placementData.map((item, idx) => `
+        <div class="glass-panel p-5 rounded-xl ${item.trackClass} space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-dark-950 border border-slate-800 flex items-center justify-center text-xs font-mono font-bold text-slate-300">${idx+1}</span>
+              <span class="text-sm font-bold text-white">${item.act}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-${item.badgeColor}-500/20 text-${item.badgeColor}-300 border border-${item.badgeColor}-500/30">${item.speaker}</span>
+            </div>
+            <div class="text-xs font-mono text-slate-300 bg-dark-950 px-2.5 py-1 rounded border border-slate-800 font-bold">
+              ${item.timestamp}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            
+            <div class="p-3 rounded-lg bg-dark-950/80 border border-slate-800/80 space-y-1.5">
+              <div class="font-bold text-slate-300 flex items-center gap-1.5">
+                <i data-lucide="monitor" class="w-3.5 h-3.5 text-brand-400"></i> What to Place on Screen (Video Track):
+              </div>
+              <p class="text-slate-300 leading-relaxed">${item.visualPlacement}</p>
+              <div class="text-[11px] font-mono text-amber-300 pt-1">
+                <strong>Text Overlay:</strong> ${item.overlayText}
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-dark-950/80 border border-slate-800/80 space-y-1.5">
+              <div class="font-bold text-slate-300 flex items-center gap-1.5">
+                <i data-lucide="mic" class="w-3.5 h-3.5 text-emerald-400"></i> What Audio to Place (Audio Track):
+              </div>
+              <p class="text-slate-300 leading-relaxed font-mono italic text-[11px]">${item.audioPlacement}</p>
+              <div class="text-[11px] font-mono text-purple-300 pt-1">
+                <strong>Editing Action:</strong> ${item.editingAction}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    renderTimelineFix();
+  </script>
+</body>
+</html>
