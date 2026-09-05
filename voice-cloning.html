@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Cloning Hub — Architecture, Comparison & Interactive Search</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f7ff',
+              100: '#ebf0fe',
+              200: '#d6e0fd',
+              300: '#b3c7fc',
+              400: '#8aa6f9',
+              500: '#6382f6',
+              600: '#4f66ee',
+              700: '#3f4fd6',
+              800: '#3341ad',
+              900: '#2d3888',
+              950: '#1b2152',
+            },
+            dark: {
+              950: '#07090e',
+              900: '#0c1017',
+              850: '#111722',
+              800: '#171f2e',
+              750: '#1d273a',
+              700: '#26334a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 130, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.8);
+    }
+    .glass-panel {
+      background: rgba(17, 23, 34, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 antialiased flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP HEADER / NAV -->
+  <header class="border-b border-slate-800/80 glass-panel sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-brand-500/20 ring-1 ring-white/20 hover:scale-105 transition">
+          <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">Voice Cloning Hub & Knowledge Engine</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">M1 Max 64GB + Cloud</span>
+          </div>
+          <p class="text-xs text-slate-400">Complete guide, local MLX benchmarks, search engine & 30-min recording dataset</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span class="hidden sm:inline">ElevenLabs Studio</span>
+        </a>
+        <a href="cloned-voice.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 transition">
+          <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Erdem Cloned Voice</span>
+        </a>
+        <a href="https://github.com/rifaterdemsahin/elevenlabs" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-400 hover:text-white border border-slate-800 transition">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
+
+    <!-- HERO SECTION -->
+    <div class="relative overflow-hidden rounded-2xl glass-panel p-6 sm:p-8 mb-8 border border-white/10 shadow-2xl">
+      <div class="relative z-10 max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-300 border border-brand-500/20 text-xs font-semibold mb-4">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span>Voice Cloning Deep Dive • Local Apple Silicon & Cloud Narration</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+          Everything You Need for <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-indigo-300 to-purple-400">AI Voice Cloning</span> & Local Narration
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
+          Voice cloning is the process of creating a synthesized AI voice that accurately replicates a speaker's timbre, rhythm, and tone from audio samples. Compare top cloud services (ElevenLabs, Descript, Resemble AI) with zero-cost local Apple Silicon engines (Qwen3-TTS 1.7B, Chatterbox, F5-TTS) running on your M1 Max 64GB unified memory.
+        </p>
+
+        <!-- Quick Stats Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+          <div class="p-3 rounded-xl bg-dark-850/80 border border-slate-800/80">
+            <div class="text-xs text-slate-400 font-medium">Top Local Model</div>
+            <div class="text-base font-bold text-white mt-0.5">Qwen3-TTS 1.7B</div>
+            <div class="text-[11px] text-emerald-400">MLX-Audio / Apple Silicon</div>
+          </div>
+          <div class="p-3 rounded-xl bg-dark-850/80 border border-slate-800/80">
+            <div class="text-xs text-slate-400 font-medium">Top Cloud Tool</div>
+            <div class="text-base font-bold text-white mt-0.5">ElevenLabs</div>
+            <div class="text-[11px] text-brand-400">Professional Voice Clone</div>
+          </div>
+          <div class="p-3 rounded-xl bg-dark-850/80 border border-slate-800/80">
+            <div class="text-xs text-slate-400 font-medium">Target Hardware</div>
+            <div class="text-base font-bold text-white mt-0.5">M1 Max 64GB</div>
+            <div class="text-[11px] text-purple-400">Unified Memory / MPS</div>
+          </div>
+          <div class="p-3 rounded-xl bg-dark-850/80 border border-slate-800/80">
+            <div class="text-xs text-slate-400 font-medium">Master Audio Dataset</div>
+            <div class="text-base font-bold text-white mt-0.5">30-Min Script</div>
+            <div class="text-[11px] text-amber-400">10 Structured Sections</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH & DISCOVERY BAR -->
+    <div class="glass-panel rounded-2xl p-4 sm:p-6 mb-8 border border-brand-500/20 shadow-xl" id="search-section">
+      <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4">
+        <div class="relative flex-grow">
+          <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search voice cloning concepts, models (Qwen3, ElevenLabs, Chatterbox), scripts, M1 commands..."
+            class="w-full pl-11 pr-24 py-3 bg-dark-900 border border-slate-700/80 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm transition"
+            oninput="handleSearch()"
+          />
+          <button 
+            id="clearSearchBtn" 
+            onclick="clearSearch()" 
+            class="hidden absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-xs text-slate-400 hover:text-white bg-slate-800 rounded-md transition">
+            Clear
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 whitespace-nowrap" id="searchResultCount">Showing all content</span>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80" id="filterPills">
+        <span class="text-xs font-semibold text-slate-400 mr-1">Quick Filters:</span>
+        <button onclick="setFilter('all')" class="filter-btn active px-3 py-1 rounded-lg text-xs font-semibold bg-brand-600 text-white transition shadow-sm" data-filter="all">All Content</button>
+        <button onclick="setFilter('cloud')" class="filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition" data-filter="cloud">Cloud Tools</button>
+        <button onclick="setFilter('local')" class="filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition" data-filter="local">Local M1 Max Models</button>
+        <button onclick="setFilter('script')" class="filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition" data-filter="script">30-Min Master Script</button>
+        <button onclick="setFilter('setup')" class="filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition" data-filter="setup">M1 Max Setup & Code</button>
+        <button onclick="setFilter('bestpractices')" class="filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition" data-filter="bestpractices">Recording Best Practices</button>
+      </div>
+
+      <!-- Quick Search Keywords -->
+      <div class="flex flex-wrap items-center gap-1.5 mt-3 text-xs text-slate-400">
+        <span class="text-slate-500">Popular tags:</span>
+        <button onclick="quickTagSearch('Qwen3-TTS 1.7B')" class="hover:text-brand-300 underline decoration-dotted">Qwen3-TTS 1.7B</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('ElevenLabs')" class="hover:text-brand-300 underline decoration-dotted">ElevenLabs</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('Chatterbox')" class="hover:text-brand-300 underline decoration-dotted">Chatterbox</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('Kubernetes')" class="hover:text-brand-300 underline decoration-dotted">Kubernetes Script</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('mlx-audio')" class="hover:text-brand-300 underline decoration-dotted">mlx-audio</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('Zero-shot')" class="hover:text-brand-300 underline decoration-dotted">Zero-shot vs Fine-tune</button>
+        <span>•</span>
+        <button onclick="quickTagSearch('FFmpeg 24kHz')" class="hover:text-brand-300 underline decoration-dotted">FFmpeg 24kHz</button>
+      </div>
+    </div>
+
+    <!-- MAIN SEARCHABLE CONTENT CONTAINER -->
+    <div id="contentSections" class="space-y-10">
+
+      <!-- SECTION 1: HOW VOICE CLONING WORKS & WORKFLOW ARCHITECTURE -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="cloud local setup" data-keywords="how voice cloning works zero-shot fine-tuning acoustic model waveform synthesizer embeddings vocoder apple silicon m1 max workflow">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
+            <i data-lucide="cpu" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">1. How Voice Cloning Works & Architecture</h3>
+            <p class="text-xs text-slate-400">The science of synthesizing human timbre from audio samples</p>
+          </div>
+        </div>
+
+        <div class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
+          <p>
+            Voice cloning is the process of generating synthetic speech that mirrors a specific person's vocal identity (pitch, cadence, resonance, pacing, and accent) using neural audio models.
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            <div class="p-4 rounded-xl bg-dark-900 border border-slate-800">
+              <h4 class="font-bold text-brand-300 flex items-center gap-2 mb-2 text-sm">
+                <i data-lucide="zap" class="w-4 h-4"></i> Approach A: Reference-Based Zero-Shot Cloning
+              </h4>
+              <p class="text-xs text-slate-300">
+                You provide a short <strong>10–30 second reference WAV</strong> and its exact transcript. The model extracts speaker acoustic embeddings on the fly and conditions its autoregressive or flow-matching generator without requiring any training or weight modification.
+              </p>
+              <div class="mt-2 text-[11px] text-emerald-400 font-semibold">✓ Used by: Qwen3-TTS Base, Chatterbox, Resemble AI, Descript</div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-dark-900 border border-slate-800">
+              <h4 class="font-bold text-purple-300 flex items-center gap-2 mb-2 text-sm">
+                <i data-lucide="layers" class="w-4 h-4"></i> Approach B: Dedicated Model Fine-Tuning
+              </h4>
+              <p class="text-xs text-slate-300">
+                You train or fine-tune neural network weights on a <strong>30–180 minute dataset</strong> of multi-speed, multi-emotion recordings. Creates an immutable custom model checkpoint exclusively tuned to your personal vocal nuances.
+              </p>
+              <div class="mt-2 text-[11px] text-purple-400 font-semibold">✓ Used by: ElevenLabs Professional Voice Clone (PVC), LoRA Fine-tunes</div>
+            </div>
+          </div>
+
+          <!-- Workflow Diagram -->
+          <div class="p-4 rounded-xl bg-dark-950 border border-slate-800/80 font-mono text-xs text-slate-300">
+            <div class="text-slate-400 font-bold mb-2 flex items-center gap-2">
+              <i data-lucide="workflow" class="w-4 h-4 text-brand-400"></i> Recommended Local Pipeline (M1 Max 64GB):
+            </div>
+            <div class="text-brand-300 leading-relaxed">
+              [Master Voice Recordings (30 mins)] ➔ [Select Clean 10-30s Clip + Transcript] ➔ [MLX-Audio Qwen3-TTS 1.7B Base] ➔ [Course Script] ➔ [High Fidelity WAV] ➔ [DaVinci Resolve / CapCut] ➔ [YouTube / Course Publication]
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: CLOUD TOOLS SHORTLIST & COMPARISON -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="cloud" data-keywords="elevenlabs descript resemble ai cloud voice cloning tools comparison professional voice clone overdub api automated workflow pricing">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+            <i data-lucide="cloud" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">2. Cloud Voice Cloning Tools Comparison</h3>
+            <p class="text-xs text-slate-400">Shortlist for YouTube, technical courses, video editing, and API workflows</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto my-4">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 bg-dark-900/60">
+                <th class="py-3 px-4 font-semibold">Tool</th>
+                <th class="py-3 px-4 font-semibold">Best For</th>
+                <th class="py-3 px-4 font-semibold">Clone Quality</th>
+                <th class="py-3 px-4 font-semibold">Ease of Use</th>
+                <th class="py-3 px-4 font-semibold">Audio Required</th>
+                <th class="py-3 px-4 font-semibold">Pick / Rating</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span> ElevenLabs
+                </td>
+                <td class="py-3 px-4">Best overall realism & professional course narration</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐</td>
+                <td class="py-3 px-4">2-5 mins (Instant) / 30-180 mins (PVC)</td>
+                <td class="py-3 px-4 font-bold text-amber-400">🥇 1st Pick (Cloud)</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-blue-400"></span> Descript (Overdub)
+                </td>
+                <td class="py-3 px-4">Voice cloning directly inside transcript video editor</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4">~90 seconds</td>
+                <td class="py-3 px-4 font-bold text-blue-400">🥈 2nd Pick (Editing)</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-purple-400"></span> Resemble AI
+                </td>
+                <td class="py-3 px-4">Developer APIs, automated pipelines & Chatterbox open source</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐</td>
+                <td class="py-3 px-4">10-60 seconds</td>
+                <td class="py-3 px-4 font-bold text-purple-400">🥉 3rd Pick (APIs)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
+          <div class="p-4 rounded-xl bg-dark-900/80 border border-slate-800">
+            <h4 class="font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400"></i> ElevenLabs Workflow
+            </h4>
+            <p class="text-slate-400 leading-relaxed">
+              Start with a 2-5 min clean recording to test technical jargon and conversational pacing. Once verified, record a 30-60 min dataset for a Professional Voice Clone (PVC) with multilingual speech (English & Turkish).
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-dark-900/80 border border-slate-800">
+            <h4 class="font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="video" class="w-4 h-4 text-blue-400"></i> Descript Overdub
+            </h4>
+            <p class="text-slate-400 leading-relaxed">
+              Perfect if you record video tutorials and make small speaking mistakes. Simply edit the text in the transcript and Descript will generate replacement audio in your cloned voice seamlessly.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-dark-900/80 border border-slate-800">
+            <h4 class="font-bold text-white mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="terminal" class="w-4 h-4 text-purple-400"></i> Resemble AI / Chatterbox
+            </h4>
+            <p class="text-slate-400 leading-relaxed">
+              High-speed programmatic speech generation. Resemble open-sourced its Chatterbox model under the MIT license, making it a stellar candidate for both cloud API and local Apple Silicon inference.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: LOCAL OPEN-SOURCE MODELS & BENCHMARKS (APPLE SILICON M1 MAX 64GB) -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="local" data-keywords="local models apple silicon m1 max 64gb qwen3-tts 1.7b chatterbox f5-tts xtts-v2 openvoice luna-tts benchmark quality similarity voicebox mlx-audio">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+            <i data-lucide="hard-drive" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">3. Local Open-Source Models & Benchmarks (Apple Silicon)</h3>
+            <p class="text-xs text-slate-400">Run voice cloning 100% locally on your Mac with zero monthly fees and 100% data privacy</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto my-4">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 bg-dark-900/60">
+                <th class="py-3 px-4 font-semibold">Model / Architecture</th>
+                <th class="py-3 px-4 font-semibold">Voice Quality</th>
+                <th class="py-3 px-4 font-semibold">Speaker Similarity</th>
+                <th class="py-3 px-4 font-semibold">M1 Max 64GB Fit</th>
+                <th class="py-3 px-4 font-semibold">Model Size / RAM</th>
+                <th class="py-3 px-4 font-semibold">Best Use Case</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr class="hover:bg-dark-850/50 transition bg-emerald-500/5">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Qwen3-TTS 1.7B-Base
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">✅ Optimal</td>
+                <td class="py-3 px-4">~3.5 GB (bf16/6-bit)</td>
+                <td class="py-3 px-4 font-bold text-emerald-300">🥇 Best Overall Local Choice (MLX)</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-blue-400"></span> Chatterbox (MIT)
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">✅ Optimal</td>
+                <td class="py-3 px-4">~3.2 GB</td>
+                <td class="py-3 px-4 font-bold text-blue-300">🥈 Expressive Narration (laughter, sighs)</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-indigo-400"></span> F5-TTS
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">✅ Strong</td>
+                <td class="py-3 px-4">~2.8 GB</td>
+                <td class="py-3 px-4">Fast flow-matching, robust long-form speech</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span> Qwen3-TTS 0.6B
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">✅ Ultra Fast</td>
+                <td class="py-3 px-4">~1.2 GB</td>
+                <td class="py-3 px-4">Rapid prototyping & low-latency generation</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span> XTTS-v2
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">✅ Good</td>
+                <td class="py-3 px-4">~2.5 GB</td>
+                <td class="py-3 px-4">Mature legacy engine / multi-language</td>
+              </tr>
+              <tr class="hover:bg-dark-850/50 transition">
+                <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-purple-400"></span> Luna-TTS (New)
+                </td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐⭐</td>
+                <td class="py-3 px-4 text-amber-300">⭐⭐⭐⭐½</td>
+                <td class="py-3 px-4 text-yellow-400 font-bold">⚡ Testing</td>
+                <td class="py-3 px-4">~3.8 GB</td>
+                <td class="py-3 px-4">Next-gen high intelligibility research</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="p-4 rounded-xl bg-dark-900 border border-slate-800 text-xs text-slate-300 space-y-2 mt-4">
+          <div class="font-bold text-white flex items-center gap-2 text-sm">
+            <i data-lucide="info" class="w-4 h-4 text-brand-400"></i> Why Your M1 Max 64GB is Built for This:
+          </div>
+          <p>
+            Apple Silicon unified memory architecture means your GPU and CPU share the same blazing 400 GB/s memory pool. The <strong>Qwen3-TTS 1.7B Base</strong> model requires approximately 3.9 GB of VRAM in 6-bit quantization and ~4.5 GB in bf16. With 64 GB of unified RAM, your Mac operates with massive headroom, enabling fast generation without thermal throttling or paging.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 4: 30-MINUTE MASTER VOICE RECORDING SCRIPT (10 STRUCTURED SECTIONS) -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="script" data-keywords="30 minute recording script master dataset rifat erdem sahin kubernetes observability sre cloud devops commands telemetry prompts teleprompter">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30">
+              <i data-lucide="file-text" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">4. 30-Minute Master Voice Recording Script</h3>
+              <p class="text-xs text-slate-400">Engineered for technical teaching, SRE, Kubernetes, and AI course narration</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="copyFullScript()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-500/40 flex items-center gap-1.5 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span id="copyScriptBtnText">Copy Full 10-Section Script</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-dark-900 border border-amber-500/30 text-xs text-amber-200 mb-6 flex items-start gap-3">
+          <i data-lucide="alert-circle" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold">Recording Rule:</span> Do <strong>not</strong> read the section titles aloud. Speak in your normal, authentic technical teaching voice. Keep each section saved as an individual WAV clip (<code class="bg-dark-950 px-1 py-0.5 rounded text-slate-200">001.wav</code> to <code class="bg-dark-950 px-1 py-0.5 rounded text-slate-200">010.wav</code>) between 30 to 90 seconds.
+          </div>
+        </div>
+
+        <!-- 10 SECTIONS ACCORDION / CARDS -->
+        <div class="space-y-4" id="scriptSectionsContainer">
+
+          <!-- Section 1 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="1">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 1</span>
+                <h4 class="text-sm font-bold text-white">Natural Introduction & Core Motivation</h4>
+              </div>
+              <button onclick="copySectionText(1)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-1">
+Hello, my name is Rifat, and this is a recording of my natural speaking voice. Today I'm going to explain how modern cloud platforms work and how engineers can build reliable systems using automation. When I teach a technical subject, I normally start with the basic idea before moving into the implementation details. The goal is not simply to memorize commands. The goal is to understand why a system behaves the way it does. Sometimes the simplest explanation is the best explanation. Let's start with a simple example. Imagine that you have an application running on a single server. Everything works perfectly until the server fails. At that point, the application is unavailable, and your users cannot access it. This is why reliability matters.
+            </p>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="2">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 2</span>
+                <h4 class="text-sm font-bold text-white">Speaking Speed Variations & Failure Dynamics</h4>
+              </div>
+              <button onclick="copySectionText(2)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-2">
+Now I'm going to slow down and explain the same idea more carefully. Reliability means that a system continues to provide its intended service even when something goes wrong. A reliable system does not assume that everything will always work. Instead, it expects failures. Servers fail. Networks fail. Disks fail. Applications crash. And sometimes people make mistakes. The important question is not whether something will fail. The important question is what happens when it does. Now let's move a little faster. Cloud platforms give engineers many tools for dealing with these problems. We can automatically replace failed instances. We can distribute traffic across multiple servers. We can monitor applications and infrastructure. And we can use automation to reduce repetitive manual work.
+            </p>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="3">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 3</span>
+                <h4 class="text-sm font-bold text-white">Technical Terminology & Kubernetes Architecture</h4>
+              </div>
+              <button onclick="copySectionText(3)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-3">
+Let's talk about Kubernetes. Kubernetes is a container orchestration platform. A Kubernetes cluster contains control-plane components and worker nodes. The API server provides the main interface to the Kubernetes control plane. The scheduler decides where workloads should run. The controller manager continuously compares the desired state with the current state. Etcd stores the cluster's configuration and state. A pod is the smallest deployable unit in Kubernetes. A deployment manages a set of replicated pods. A service provides a stable network endpoint for accessing an application. An ingress can expose HTTP and HTTPS applications outside the cluster. Containers are useful because they package an application together with its dependencies. Docker is one of the technologies commonly used to build and work with containers. OpenShift builds on Kubernetes and provides additional enterprise capabilities.
+            </p>
+          </div>
+
+          <!-- Section 4 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="4">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 4</span>
+                <h4 class="text-sm font-bold text-white">CLI Commands, Numbers & Port Declarations</h4>
+              </div>
+              <button onclick="copySectionText(4)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-4">
+Here are some examples of commands that an engineer might use. kubectl get pods. kubectl get deployments. kubectl describe pod. kubectl logs. kubectl apply minus f deployment dot YAML. The command kubectl get nodes shows the nodes in the cluster. A typical application might run three replicas. If one replica fails, Kubernetes can create another one. We might configure a CPU request of five hundred millicores. We might configure a memory limit of one gigabyte. A service could listen on port eight thousand. An HTTPS service normally uses port four hundred and forty-three. HTTP normally uses port eighty. An application could receive one thousand requests per second. A response time of one hundred milliseconds is significantly faster than a response time of two seconds.
+            </p>
+          </div>
+
+          <!-- Section 5 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="5">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 5</span>
+                <h4 class="text-sm font-bold text-white">Observability & Step-by-Step Incident Investigation</h4>
+              </div>
+              <button onclick="copySectionText(5)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-5">
+Let's look at observability. Observability helps us understand what is happening inside a system by examining its outputs. The three common pillars are metrics, logs, and traces. Prometheus is widely used for collecting metrics. Grafana can visualize those metrics. Loki can be used for log aggregation. Elasticsearch and Kibana are another common combination for searching and visualizing logs. A useful dashboard should help an engineer answer a question quickly. A dashboard containing hundreds of meaningless graphs is not necessarily useful. The important thing is to connect the data to an operational question. For example, if users report that an application is slow, we might look at request latency. Then we might examine CPU and memory utilization. After that, we could inspect application logs. Finally, distributed traces might show which downstream service is causing the delay.
+            </p>
+          </div>
+
+          <!-- Section 6 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="6">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 6</span>
+                <h4 class="text-sm font-bold text-white">Conversational Coaching & FAQ Delivery</h4>
+              </div>
+              <button onclick="copySectionText(6)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-6">
+Now imagine that I'm explaining this to a colleague. You might ask me, "Why do we need Kubernetes if we can just run containers?" That's a good question. If you only have one or two containers, Kubernetes might be unnecessary. But as the number of applications increases, managing those containers manually becomes difficult. You need scheduling. You need health checks. You need service discovery. You need scaling. You need rolling deployments. And you need a consistent way to manage all of those things. That's where Kubernetes becomes useful. Another common question is, "Does Kubernetes automatically make an application reliable?" No. Kubernetes provides mechanisms that can improve reliability, but the application still needs to be designed properly. For example, if your application stores everything on one local disk, adding more replicas might not solve the underlying problem. The architecture still matters.
+            </p>
+          </div>
+
+          <!-- Section 7 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="7">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 7</span>
+                <h4 class="text-sm font-bold text-white">AI, LLMs & Production Engineering Verification</h4>
+              </div>
+              <button onclick="copySectionText(7)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-7">
+Artificial intelligence is changing software engineering. Large language models can help engineers understand code, generate documentation, investigate incidents, and automate repetitive tasks. However, an AI-generated answer is not automatically correct. Engineers still need to verify the result. This is particularly important in production environments. A small configuration mistake can cause a significant outage. The best workflow is usually human and AI collaboration. The engineer provides context. The model proposes an approach. The engineer tests it. Then the final solution is reviewed before it reaches production.
+            </p>
+          </div>
+
+          <!-- Section 8 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="8">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 8</span>
+                <h4 class="text-sm font-bold text-white">Cloud Platforms, Tools & Industry Acronyms</h4>
+              </div>
+              <button onclick="copySectionText(8)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-8">
+My daily work involves technologies such as AWS, Azure, Google Cloud, Kubernetes, OpenShift, Terraform, Ansible, Jenkins, GitHub Actions, GitLab, Docker, Prometheus, Grafana, Loki, and Elasticsearch. I might work with Amazon Web Services in one environment and Microsoft Azure in another. Google Cloud Platform is commonly abbreviated as GCP. Infrastructure as Code is commonly abbreviated as IaC. Continuous Integration and Continuous Delivery are often abbreviated as CI and CD. Site Reliability Engineering is abbreviated as SRE. A Service Level Objective is an SLO. A Service Level Indicator is an SLI. A Service Level Agreement is an SLA.
+            </p>
+          </div>
+
+          <!-- Section 9 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="9">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 9</span>
+                <h4 class="text-sm font-bold text-white">Expressive Narration & High-Stakes Storytelling</h4>
+              </div>
+              <button onclick="copySectionText(9)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-9">
+Now let's make this more energetic. Imagine that your production application suddenly starts returning errors. You check the dashboard. CPU looks normal. Memory looks normal. Network traffic looks normal. But the error rate has increased dramatically. What do you do next? You don't start changing random configuration values. You investigate. You look at the timeline. You compare the current deployment with the previous deployment. You inspect the application logs. And then you discover something interesting. A new version was deployed ten minutes ago. That gives you a strong hypothesis. Now you can test it. This is the difference between guessing and engineering.
+            </p>
+          </div>
+
+          <!-- Section 10 -->
+          <div class="script-card rounded-xl bg-dark-900/90 border border-slate-800 p-4 transition hover:border-slate-700" data-section="10">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">Section 10</span>
+                <h4 class="text-sm font-bold text-white">Course Summary & Authentic Voice Baseline</h4>
+              </div>
+              <button onclick="copySectionText(10)" class="text-xs text-slate-400 hover:text-brand-300 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+              </button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed font-sans bg-dark-950/60 p-3 rounded-lg border border-slate-800/60 select-all" id="script-text-10">
+The most important lesson is simple. Good engineering is not about knowing every command. It is about understanding systems. Understand the architecture. Understand the failure modes. Understand the dependencies. Measure what matters. Automate repetitive work. And always verify your assumptions. That's how we build systems that are reliable, observable, and maintainable. Thank you for listening. This recording represents my natural speaking voice and my normal technical teaching style.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 5: RECORDING GUIDELINES & FFMPEG AUDIO PREPARATION -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="bestpractices" data-keywords="recording best practices microphone acoustic environment 24khz mono 16-bit wav ffmpeg conversion audacity obs gain clipping">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+            <i data-lucide="mic-2" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">5. Studio Recording Best Practices & FFmpeg Audio Prep</h3>
+            <p class="text-xs text-slate-400">Achieve broadcast-grade voice cloning fidelity with zero robotic distortion</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4 text-xs">
+          <div class="p-4 rounded-xl bg-dark-900 border border-slate-800 space-y-2">
+            <h4 class="font-bold text-cyan-300 flex items-center gap-1.5 text-sm">
+              <i data-lucide="volume-2" class="w-4 h-4"></i> Microphone & Room Acoustics
+            </h4>
+            <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+              <li><strong>Distance:</strong> Position your mic 15–20 cm away with a pop filter.</li>
+              <li><strong>Environment:</strong> Quiet room with minimal echo/reverb (soft furnishings/curtains).</li>
+              <li><strong>Consistency:</strong> Keep the exact same mic gain and body posture across all clips.</li>
+              <li><strong>No Artificial Filtering:</strong> Avoid aggressive software noise gates during recording.</li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-xl bg-dark-900 border border-slate-800 space-y-2">
+            <h4 class="font-bold text-brand-300 flex items-center gap-1.5 text-sm">
+              <i data-lucide="file-audio" class="w-4 h-4"></i> Audio Format Requirements for MLX / Qwen
+            </h4>
+            <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+              <li><strong>Sampling Rate:</strong> 24,000 Hz (24 kHz) PCM uncompressed.</li>
+              <li><strong>Channels:</strong> 1 channel (Mono).</li>
+              <li><strong>Bit Depth:</strong> 16-bit signed integer (<code class="bg-dark-950 px-1 py-0.5 rounded">s16</code>).</li>
+              <li><strong>Format:</strong> Clean WAV container.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FFmpeg Command snippet -->
+        <div class="p-4 rounded-xl bg-dark-950 border border-slate-800 font-mono text-xs">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-slate-400 font-bold flex items-center gap-1.5">
+              <i data-lucide="terminal" class="w-3.5 h-3.5 text-cyan-400"></i> FFmpeg Batch Conversion Command:
+            </span>
+            <button onclick="copyCommand('ffmpeg -i raw_recording.m4a -ar 24000 -ac 1 -sample_fmt s16 reference.wav')" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+            </button>
+          </div>
+          <pre class="text-cyan-300 overflow-x-auto p-2 bg-dark-900/80 rounded border border-slate-800">ffmpeg -i raw_recording.m4a -ar 24000 -ac 1 -sample_fmt s16 reference.wav</pre>
+        </div>
+      </section>
+
+      <!-- SECTION 6: LOCAL M1 MAX 64GB INSTALLATION & READY-TO-RUN SCRIPTS -->
+      <section class="searchable-item glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-xl" data-category="setup local" data-keywords="m1 max setup apple silicon mlx-audio install.sh clone.sh generate.sh qwen3-tts 12hz 1.7b base bf16 terminal bash scripts python 3.12">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30">
+            <i data-lucide="terminal" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">6. Local Apple Silicon M1 Max Setup & Ready-to-Run Scripts</h3>
+            <p class="text-xs text-slate-400">Native Apple Silicon Metal performance with MLX-Audio and Qwen3-TTS 1.7B</p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Step by Step -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-dark-900 border border-slate-800">
+              <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-300 flex items-center justify-center font-bold mb-2">1</div>
+              <h5 class="font-bold text-white mb-1">Verify Apple Silicon</h5>
+              <p class="text-slate-400">Run <code class="bg-dark-950 px-1 py-0.5 rounded text-brand-300">uname -m</code> (returns <code class="text-emerald-400 font-bold">arm64</code>). Python 3.10–3.12 supported.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-dark-900 border border-slate-800">
+              <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-300 flex items-center justify-center font-bold mb-2">2</div>
+              <h5 class="font-bold text-white mb-1">Install MLX-Audio</h5>
+              <p class="text-slate-400">Installed inside virtual env <code class="bg-dark-950 px-1 py-0.5 rounded text-brand-300">~/AI/voice-cloning/.venv</code> with Metal hardware acceleration.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-dark-900 border border-slate-800">
+              <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-300 flex items-center justify-center font-bold mb-2">3</div>
+              <h5 class="font-bold text-white mb-1">Zero-Shot Generation</h5>
+              <p class="text-slate-400">Provide reference WAV + transcript to clone your voice instantly on your M1 Max.</p>
+            </div>
+          </div>
+
+          <!-- Automated Shell Scripts Suite -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <i data-lucide="code-2" class="w-4 h-4 text-brand-400"></i> Production Automation Scripts Suite
+            </h4>
+
+            <!-- Script 1: install.sh -->
+            <div class="p-4 rounded-xl bg-dark-950 border border-slate-800 font-mono text-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-slate-400 font-bold flex items-center gap-1.5">
+                  <span class="text-emerald-400">install.sh</span> — Environment & Dependencies Setup
+                </span>
+                <button onclick="copyScriptCode('install-code')" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                  <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+                </button>
+              </div>
+              <pre id="install-code" class="text-emerald-300 overflow-x-auto p-3 bg-dark-900/90 rounded border border-slate-800">#!/usr/bin/env bash
+set -e
+echo "🚀 Initializing Local Apple Silicon Voice Cloning Environment on M1 Max..."
+
+mkdir -p ~/AI/voice-cloning/{voice_dataset,output,scripts}
+cd ~/AI/voice-cloning
+
+# Check for Homebrew & FFmpeg
+if ! command -v ffmpeg &> /dev/null; then
+  echo "📦 Installing FFmpeg via Homebrew..."
+  brew install ffmpeg
+fi
+
+# Setup Virtual Environment with Python 3.12/3.11
+if command -v python3.12 &> /dev/null; then
+  python3.12 -m venv .venv
+elif command -v python3.11 &> /dev/null; then
+  python3.11 -m venv .venv
+else
+  python3 -m venv .venv
+fi
+
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -U mlx-audio
+
+echo "✅ Environment configured at ~/AI/voice-cloning/.venv"</pre>
+            </div>
+
+            <!-- Script 2: generate.sh -->
+            <div class="p-4 rounded-xl bg-dark-950 border border-slate-800 font-mono text-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-slate-400 font-bold flex items-center gap-1.5">
+                  <span class="text-brand-400">generate.sh</span> — Generate High-Quality Narration WAV
+                </span>
+                <button onclick="copyScriptCode('generate-code')" class="text-brand-400 hover:text-brand-300 flex items-center gap-1">
+                  <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+                </button>
+              </div>
+              <pre id="generate-code" class="text-brand-300 overflow-x-auto p-3 bg-dark-900/90 rounded border border-slate-800">#!/usr/bin/env bash
+set -e
+
+SCRIPT_FILE="${1:-lesson_script.txt}"
+REF_AUDIO="${2:-./voice_dataset/001.wav}"
+REF_TEXT="${3:-./voice_dataset/001.txt}"
+OUTPUT_DIR="${4:-./output}"
+
+if [ ! -f "$SCRIPT_FILE" ]; then
+  echo "❌ Error: Script text file '$SCRIPT_FILE' not found!"
+  exit 1
+fi
+
+source ~/AI/voice-cloning/.venv/bin/activate
+
+TEXT_CONTENT=$(cat "$SCRIPT_FILE")
+REF_TEXT_CONTENT=$(cat "$REF_TEXT")
+
+echo "🎙️ Generating narration in your cloned voice using Qwen3-TTS 1.7B Base..."
+mlx_audio.tts.generate \
+  --model mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16 \
+  --text "$TEXT_CONTENT" \
+  --ref_audio "$REF_AUDIO" \
+  --ref_text "$REF_TEXT_CONTENT" \
+  --output_path "$OUTPUT_DIR"
+
+echo "🎉 Narration saved to $OUTPUT_DIR"</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- NO SEARCH RESULTS FALLBACK -->
+    <div id="noResultsState" class="hidden text-center py-16">
+      <div class="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4 text-slate-500">
+        <i data-lucide="search-x" class="w-8 h-8"></i>
+      </div>
+      <h4 class="text-lg font-bold text-white">No Matching Content Found</h4>
+      <p class="text-sm text-slate-400 mt-1 max-w-md mx-auto">Try searching for keywords like "Qwen3", "Kubernetes", "ElevenLabs", "M1 Max", "FFmpeg", or "Chatterbox".</p>
+      <button onclick="clearSearch()" class="mt-4 px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg transition">
+        Reset Search & Show All
+      </button>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 glass-panel py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <i data-lucide="mic" class="w-4 h-4 text-brand-400"></i>
+        <span class="text-slate-300 font-semibold">Rifat Erdem Sahin — Voice Cloning Ecosystem</span>
+        <span>• M1 Max 64GB Unified Memory & Cloud Pipelines</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:text-white transition">ElevenLabs Studio</a>
+        <a href="cloned-voice.html" class="hover:text-white transition">Erdem Cloned Voice</a>
+        <a href="#search-section" class="text-brand-400 hover:text-brand-300 transition">Search Knowledge Base</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT SEARCH & INTERACTION ENGINE -->
+  <script>
+    lucide.createIcons();
+
+    let currentFilter = 'all';
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.className = 'filter-btn active px-3 py-1 rounded-lg text-xs font-semibold bg-brand-600 text-white transition shadow-sm';
+        } else {
+          btn.className = 'filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition';
+        }
+      });
+      handleSearch();
+    }
+
+    function quickTagSearch(term) {
+      const input = document.getElementById('searchInput');
+      input.value = term;
+      handleSearch();
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      setFilter('all');
+      handleSearch();
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const items = document.querySelectorAll('.searchable-item');
+      const scriptCards = document.querySelectorAll('.script-card');
+      const resultCountSpan = document.getElementById('searchResultCount');
+      const noResults = document.getElementById('noResultsState');
+
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const categories = (item.getAttribute('data-category') || '').split(' ');
+        const keywords = (item.getAttribute('data-keywords') || '').toLowerCase();
+        const text = item.textContent.toLowerCase();
+
+        // Check filter category match
+        const matchesCategory = (currentFilter === 'all' || categories.includes(currentFilter));
+
+        // Check text/query match
+        const matchesQuery = (query === '' || text.includes(query) || keywords.includes(query));
+
+        if (matchesCategory && matchesQuery) {
+          item.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      // Filter individual script cards if user searches inside script section
+      scriptCards.forEach(card => {
+        const cardText = card.textContent.toLowerCase();
+        if (query === '' || cardText.includes(query)) {
+          card.classList.remove('opacity-30');
+          card.classList.remove('border-slate-800');
+          if (query !== '') {
+            card.classList.add('border-brand-500/60');
+          }
+        } else {
+          if (query !== '') {
+            card.classList.add('opacity-30');
+            card.classList.remove('border-brand-500/60');
+          } else {
+            card.classList.remove('opacity-30');
+          }
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+        resultCountSpan.textContent = 'No matching items';
+      } else {
+        noResults.classList.add('hidden');
+        resultCountSpan.textContent = query ? `Found ${visibleCount} matching sections` : 'Showing all content';
+      }
+    }
+
+    function copySectionText(sectionId) {
+      const textElem = document.getElementById(`script-text-${sectionId}`);
+      if (textElem) {
+        navigator.clipboard.writeText(textElem.innerText.trim());
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xl transition-all';
+        toast.textContent = `✓ Section ${sectionId} text copied to clipboard!`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+    }
+
+    function copyFullScript() {
+      let fullText = '';
+      for (let i = 1; i <= 10; i++) {
+        const textElem = document.getElementById(`script-text-${i}`);
+        if (textElem) {
+          fullText += `=== Section ${i} ===\n` + textElem.innerText.trim() + '\n\n';
+        }
+      }
+      navigator.clipboard.writeText(fullText.trim());
+      const btnText = document.getElementById('copyScriptBtnText');
+      btnText.textContent = '✓ Copied Full Script!';
+      setTimeout(() => {
+        btnText.textContent = 'Copy Full 10-Section Script';
+      }, 3000);
+    }
+
+    function copyCommand(cmd) {
+      navigator.clipboard.writeText(cmd);
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-6 right-6 z-50 bg-cyan-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xl transition-all';
+      toast.textContent = '✓ FFmpeg command copied!';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    function copyScriptCode(elemId) {
+      const elem = document.getElementById(elemId);
+      if (elem) {
+        navigator.clipboard.writeText(elem.innerText.trim());
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-brand-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xl transition-all';
+        toast.textContent = '✓ Shell script copied to clipboard!';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+    }
+  </script>
+</body>
+</html>

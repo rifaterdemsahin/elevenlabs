@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 1.1: Core Prompting Principles — Voiceover Player</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              400: '#8aa6f9',
+              500: '#6382f6',
+              600: '#4f66ee',
+            },
+            dark: {
+              950: '#07090e',
+              900: '#0c1017',
+              850: '#111722',
+              800: '#171f2e',
+              750: '#1d273a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(99, 130, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 95%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .glass-panel {
+      background: rgba(17, 23, 34, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .scene-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scene-card.active {
+      border-color: rgba(99, 130, 246, 0.55);
+      box-shadow: 0 0 0 1px rgba(99, 130, 246, 0.25), 0 8px 24px -4px rgba(99, 130, 246, 0.15);
+    }
+    audio { width: 100%; }
+    .badge-tone {
+      background: rgba(99, 130, 246, 0.12);
+      border: 1px solid rgba(99, 130, 246, 0.25);
+      color: #93c5fd;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 glass-panel sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-brand-500/20 ring-1 ring-white/20">
+          <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">Module 1.1: Core Prompting Principles</h1>
+            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30">AOU Certified AI Associate</span>
+          </div>
+          <p class="text-xs text-slate-400">Structured Input Formats · ElevenLabs Adam (eleven-v3) · 8 Scenes</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="../../index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span class="hidden sm:inline">Studio</span>
+        </a>
+        <a href="../active-self-mastery/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="play-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span class="hidden sm:inline">Self-Mastery</span>
+        </a>
+        <a href="../archive/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-850 hover:bg-dark-800 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="archive" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span class="hidden sm:inline">Archive</span>
+        </a>
+        <a href="https://github.com/rifaterdemsahin/elevenlabs" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-400 hover:text-white border border-slate-800 transition">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-6">
+
+    <!-- Full Audio Hero Section -->
+    <section class="glass-panel rounded-2xl p-5 sm:p-7 shadow-2xl flex flex-col gap-5 border border-brand-500/25 relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+            </span>
+            <h2 class="text-base font-bold text-white tracking-wide uppercase">Full Master Voiceover</h2>
+          </div>
+          <p class="text-sm text-slate-300 mt-1">Complete continuous narration for Video 1.1 with studio pauses and dynamic cadence.</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap text-xs">
+          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Voice: <strong>Adam</strong></span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Stability: <strong>0.45</strong></span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Clarity: <strong>0.80</strong></span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Style: <strong>0.15</strong></span>
+        </div>
+      </div>
+
+      <!-- Master Audio Player -->
+      <div class="bg-dark-900/90 rounded-xl p-4 border border-slate-800 flex flex-col gap-3">
+        <audio id="fullAudio" controls preload="auto" class="rounded-lg">
+          <source src="full.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-800/80">
+          <div class="flex items-center gap-2">
+            <button onclick="playAudio('fullAudio')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white flex items-center gap-1.5 shadow transition">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              <span>Play Full Track</span>
+            </button>
+            <button onclick="pauseAudio('fullAudio')" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition">
+              <i data-lucide="pause" class="w-3.5 h-3.5"></i>
+              <span>Pause</span>
+            </button>
+            <div class="flex items-center gap-1 bg-dark-800 border border-slate-700 rounded-lg p-0.5 text-xs text-slate-300">
+              <button onclick="setSpeed('fullAudio', 1.0)" class="px-2 py-0.5 rounded hover:bg-dark-750 font-medium">1x</button>
+              <button onclick="setSpeed('fullAudio', 1.25)" class="px-2 py-0.5 rounded hover:bg-dark-750 font-medium">1.25x</button>
+              <button onclick="setSpeed('fullAudio', 1.5)" class="px-2 py-0.5 rounded hover:bg-dark-750 font-medium">1.5x</button>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <a href="full.mp3" download="Module-1-1-Core-Prompting-Full.mp3" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 shadow transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download Master MP3</span>
+            </a>
+            <a href="script.md" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 flex items-center gap-1.5 transition">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>View Script</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Scene Breakdown Section -->
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3 px-1">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-brand-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Scene Breakdown & Audio Clips</h2>
+        </div>
+        <span class="text-xs text-slate-400">8 Modular Studio Scenes</span>
+      </div>
+
+      <div id="sceneList" class="flex flex-col gap-3.5"></div>
+    </section>
+
+    <!-- Script Highlights Box -->
+    <section class="glass-panel rounded-2xl p-6 border border-slate-800 flex flex-col gap-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="bookmark" class="w-4 h-4 text-indigo-400"></i>
+        <h3 class="text-sm font-bold text-white">Course Key Takeaway Framework</h3>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div class="bg-dark-900/80 rounded-xl p-3 border border-slate-800">
+          <div class="font-bold text-brand-400 mb-1">1. Role</div>
+          <p class="text-slate-400">System persona & domain expertise context.</p>
+        </div>
+        <div class="bg-dark-900/80 rounded-xl p-3 border border-slate-800">
+          <div class="font-bold text-emerald-400 mb-1">2. Context</div>
+          <p class="text-slate-400">Explicit background data inside XML / Markdown quotes.</p>
+        </div>
+        <div class="bg-dark-900/80 rounded-xl p-3 border border-slate-800">
+          <div class="font-bold text-amber-400 mb-1">3. Task</div>
+          <p class="text-slate-400">Clear, unambiguous transformation or extraction goal.</p>
+        </div>
+        <div class="bg-dark-900/80 rounded-xl p-3 border border-slate-800">
+          <div class="font-bold text-purple-400 mb-1">4. Constraints</div>
+          <p class="text-slate-400">Target JSON schema & strict guardrails (e.g. unknown = null).</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800/80 glass-panel py-6 mt-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span>AOU Certified AI Associate · Module 1.1 Voiceover</span>
+        <span>·</span>
+        <span>ElevenLabs eleven-v3 via fal.ai</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="../../cloned-voice.html" class="text-slate-400 hover:text-white transition">Cloned Voice Studio</a>
+        <a href="../../index.html" class="text-slate-400 hover:text-white transition">Voice Studio</a>
+        <a href="../archive/" class="text-slate-400 hover:text-white transition">Archive</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const SCENES = [
+      {
+        id: '01',
+        title: 'Introduction & Foundational Shift',
+        tone: 'warm, engaging, authoritative',
+        file: 'scene-01.mp3',
+        text: 'Welcome to Module 1.1 of the AOU Certified AI Associate course. Today, we’re unpacking the foundational shift that turns unpredictable AI outputs into production-ready results: Core Prompting Principles and Structured Input Formats.'
+      },
+      {
+        id: '02',
+        title: 'The Four Key Components & Architecture',
+        tone: 'clear, articulate',
+        file: 'scene-02.mp3',
+        text: 'When working with Large Language Models, clarity isn\'t just about good grammar... it\'s about system architecture. Effective prompts contain four key components: a clear Role, rich Context, an explicit Task, and strict Constraints. When we wrap these components inside structured input formats like Markdown or JSON, we eliminate ambiguity and make outputs deterministic.'
+      },
+      {
+        id: '03',
+        title: 'The Unstructured Prompt (Before)',
+        tone: 'enthusiastic, explanatory',
+        file: 'scene-03.mp3',
+        text: 'Let\'s see this in action. Look at the left side of your screen: a standard, unstructured prompt asking for a competitive analysis. It’s vague, lacks boundaries, and yields a messy essay.'
+      },
+      {
+        id: '04',
+        title: 'Structured Reframing & Schema (After)',
+        tone: 'confident, precise',
+        file: 'scene-04.mp3',
+        text: 'Now, watch what happens on the right when we reframe the exact same request using Markdown delimiters and a target JSON schema. By defining our system context, providing input parameters inside explicit tags, and requesting a strict output format, the AI skips the fluff and generates precise, machine-readable data ready for immediate integration.'
+      },
+      {
+        id: '05',
+        title: 'Practical Walkthrough — Meeting Notes',
+        tone: 'instructional, energetic',
+        file: 'scene-05.mp3',
+        text: 'Now, let’s build one together. Imagine you need an AI assistant to extract key deliverables and action items from raw meeting notes.'
+      },
+      {
+        id: '06',
+        title: 'Three-Step Implementation & Guardrails',
+        tone: 'step-by-step, measured',
+        file: 'scene-06.mp3',
+        text: 'First, declare the context using system tags. Second, place the raw meeting transcript inside clear XML or Markdown block quotes so the AI knows where the data starts and ends. Third, specify the exact schema for the response. Notice how setting constraints—like "If a deadline is unknown, output null"—prevents the model from guessing or hallucinating dates.'
+      },
+      {
+        id: '07',
+        title: 'Exercise 1.1 Challenge: Prompt Refactor',
+        tone: 'encouraging, call-to-action',
+        file: 'scene-07.mp3',
+        text: 'It\'s your turn to apply this framework. In your course workspace, launch Exercise 1.1: The Prompt Refactor. You\'ll find real-world enterprise prompts that are currently generating inconsistent results. Your task: restructure them using the Role, Context, Task, Constraint framework, and format the inputs using Markdown headers and XML boundaries.'
+      },
+      {
+        id: '08',
+        title: 'Sandbox Verification & Outro',
+        tone: 'inspiring, closing',
+        file: 'scene-08.mp3',
+        text: 'Test your prompt directly in the interactive sandbox to verify your output structure. Master this pattern, and you\'ve unlocked the core engine of professional AI productivity. See you in Video 1.2!'
+      }
+    ];
+
+    function renderScenes() {
+      const container = document.getElementById('sceneList');
+      container.innerHTML = SCENES.map((scene, idx) => `
+        <div id="card-${scene.id}" class="scene-card glass-panel rounded-xl p-4 sm:p-5 border border-slate-800/90 flex flex-col gap-3">
+          <div class="flex items-start justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-dark-850 border border-slate-700 flex items-center justify-center font-mono font-bold text-xs text-brand-400">
+                ${scene.id}
+              </span>
+              <div>
+                <h4 class="text-sm font-semibold text-white">${scene.title}</h4>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="badge-tone px-2 py-0.5 rounded text-[10px] font-medium">[${scene.tone}]</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="copyText('${scene.id}')" title="Copy Scene Script" class="p-1.5 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+              <a href="${scene.file}" download="Module-1-1-Scene-${scene.id}.mp3" title="Download Clip" class="p-1.5 rounded-lg bg-dark-850 hover:bg-dark-800 text-emerald-400 hover:text-emerald-300 border border-slate-800 transition">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <p id="text-${scene.id}" class="text-sm text-slate-300 leading-relaxed pl-1 sm:pl-9">${escapeHtml(scene.text)}</p>
+
+          <div class="pl-0 sm:pl-9 pt-1">
+            <audio id="audio-${scene.id}" controls preload="none" class="h-9">
+              <source src="${scene.file}" type="audio/mpeg">
+            </audio>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+      attachAudioListeners();
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function attachAudioListeners() {
+      const audios = document.querySelectorAll('audio');
+      audios.forEach(audio => {
+        audio.addEventListener('play', (e) => {
+          // Pause others
+          audios.forEach(other => {
+            if (other !== e.target && !other.paused) {
+              other.pause();
+            }
+          });
+          // Highlight card
+          document.querySelectorAll('.scene-card').forEach(card => card.classList.remove('active'));
+          const card = e.target.closest('.scene-card');
+          if (card) card.classList.add('active');
+        });
+        audio.addEventListener('ended', (e) => {
+          const card = e.target.closest('.scene-card');
+          if (card) card.classList.remove('active');
+        });
+      });
+    }
+
+    function playAudio(id) {
+      const audio = document.getElementById(id);
+      if (audio) audio.play();
+    }
+
+    function pauseAudio(id) {
+      const audio = document.getElementById(id);
+      if (audio) audio.pause();
+    }
+
+    function setSpeed(id, rate) {
+      const audio = document.getElementById(id);
+      if (audio) audio.playbackRate = rate;
+    }
+
+    function copyText(id) {
+      const scene = SCENES.find(s => s.id === id);
+      if (scene) {
+        navigator.clipboard.writeText(scene.text);
+        alert('Scene text copied to clipboard!');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderScenes();
+    });
+  </script>
+</body>
+</html>

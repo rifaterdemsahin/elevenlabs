@@ -5,7 +5,7 @@ echo "========================================================"
 echo " ElevenLabs Studio — Local Launcher with Azure Key Vault"
 echo "========================================================"
 
-PORT=8080
+PORT=30080
 VAULT_NAME="dp-kv-deliverypilot"
 SECRET_NAME="FAL-AI-KEY"
 

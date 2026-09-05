@@ -4,12 +4,21 @@ A comprehensive client-side studio for generating speech using **ElevenLabs mode
 
 Deployed directly to GitHub Pages:
 - **Standard Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
-- **Day One Player** (How an LLM Actually Reads): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
-- **Abundance Player** (Abundance is a Platform): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
-- **Human Leverage Player** (Abundance is a Platform v2): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/)
+- **Voice Cloning Hub & Search**: [https://rifaterdemsahin.github.io/elevenlabs/voice-cloning.html](https://rifaterdemsahin.github.io/elevenlabs/voice-cloning.html)
+- **Module 1.1 Player** (Core Prompting Principles): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/module-1-1-core-prompting/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/module-1-1-core-prompting/)
+- **Self-Mastery Player** (Active Self-Mastery): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/)
+- **Voiceover Archive**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/)
 - **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 
 ---
+
+## 🎙️ Voice Cloning Hub & Local Apple Silicon Architecture
+
+A complete interactive knowledge base, search engine, and local execution pipeline:
+- **Interactive Hub & Search Page**: [`voice-cloning.html`](voice-cloning.html)
+- **30-Minute Master Dataset Script**: 10 curated sections covering Cloud, Kubernetes, SRE, and incident observability.
+- **Local Apple Silicon M1 Max 64GB Engine**: Native `mlx-audio` running `mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16` with zero monthly subscriptions.
+- **Automation Suite**: [`voice-cloning-scripts/`](voice-cloning-scripts/) with `install.sh`, `generate.sh`, and `prepare-audio.sh`.
 
 ## 🎙️ Rifat Erdem Sahin — Cloned Voice Studio
 
@@ -74,8 +83,7 @@ Open `http://localhost:8080` in **Google Chrome**.
 
 The application is hosted on GitHub Pages:
 - **Main Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
-- **Day One Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/day-one-how-an-llm-reads/)
-- **Abundance Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform/)
-- **Human Leverage Player** (v2): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/abundance-is-a-platform-v2/)
+- **Self-Mastery Player**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/)
+- **Voiceover Archive**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/)
 - **Erdem Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 - Automatically updates on push to `main` branch.
