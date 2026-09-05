@@ -1,0 +1,127 @@
+1
+00:00:00,000 --> 00:00:03,500
+[AI_ARCHITECT]: Welcome to Module 1.1 of the Certified AI Associate workshop.
+
+2
+00:00:03,700 --> 00:00:07,800
+Today, we unlock the core shift that turns unpredictable AI outputs into production-grade systems:
+
+3
+00:00:08,000 --> 00:00:11,500
+Systematic Prompt Architecture and Structured Input Delimiters.
+
+4
+00:00:12,000 --> 00:00:15,800
+When working with Large Language Models, prompt quality is not about creative writing—
+
+5
+00:00:16,000 --> 00:00:18,200
+it is software architecture.
+
+6
+00:00:18,500 --> 00:00:23,200
+Every production-grade prompt consists of four essential pillars:
+
+7
+00:00:23,500 --> 00:00:28,800
+A clear System Role, Grounded Context, an Explicit Task, and Strict Constraints.
+
+8
+00:00:29,200 --> 00:00:34,500
+Without clear boundaries, models mix user input with system instructions, causing hallucination.
+
+9
+00:00:35,000 --> 00:00:40,200
+By wrapping your prompt inside explicit delimiters—like Markdown headers, JSON schemas, or XML tags—
+
+10
+00:00:40,500 --> 00:00:44,500
+you eliminate ambiguity and achieve deterministic, machine-readable output.
+
+11
+00:00:45,000 --> 00:00:48,500
+[AI_ARCHITECT]: Let's examine the three standard structured delimiter patterns.
+
+12
+00:00:49,000 --> 00:00:54,500
+First: Markdown Delimiters. Using hierarchical H3 tags, we isolate Role, Context, and Task into clear visual blocks.
+
+13
+00:00:55,000 --> 00:01:00,800
+Second: JSON Object Schemas. We combine few-shot demonstrations with explicit key-value types to force structured responses.
+
+14
+00:01:01,200 --> 00:01:07,500
+Third: XML Tags. Using explicit <context> and <instructions> tags, which modern frontier models like Claude and Gemini prioritize.
+
+15
+00:01:08,000 --> 00:01:13,200
+Now look at the visual comparison on screen: On the left is an unstructured prompt asking for a competitive analysis.
+
+16
+00:01:13,500 --> 00:01:17,800
+It lacks boundaries, mixes data with instructions, and produces an unparseable essay.
+
+17
+00:01:18,200 --> 00:01:23,500
+On the right, we reframe the exact same request using XML tags and a target JSON schema.
+
+18
+00:01:24,000 --> 00:01:29,500
+The model instantly ignores conversational fluff and returns clean, validated JSON ready for API consumption.
+
+19
+00:01:30,000 --> 00:01:36,000
+Now that you understand the architectural blueprint, let's pass execution to Erdem in the IDE to build this live.
+
+20
+00:01:36,500 --> 00:01:38,500
+[SOUND_DESIGN: 1.0s Strategic Silence + Subtle Audio Riser Swell]
+
+21
+00:01:39,000 --> 00:01:44,500
+[ERDEM_SAHIN]: Thanks AI! Alright everyone, let's open VS Code and build a real-world enterprise extractor.
+
+22
+00:01:45,000 --> 00:01:50,500
+Imagine we have raw, messy meeting notes, and we need to extract action items, owners, and deadlines.
+
+23
+00:01:51,000 --> 00:01:56,800
+Step one: We define our System Persona inside triple hashes: 'You are an executive SRE operations assistant'.
+
+24
+00:01:57,200 --> 00:02:04,200
+Step two: We isolate the raw meeting transcript inside explicit <transcript> XML tags so the LLM knows exactly where user data starts and ends.
+
+25
+00:02:04,500 --> 00:02:11,500
+Step three: We enforce our JSON output schema. And here is a crucial production tip: always add a negative constraint!
+
+26
+00:02:12,000 --> 00:02:18,500
+Notice line 24: 'If a deadline is not explicitly stated in the transcript, output null—do not guess or infer dates.'
+
+27
+00:02:19,000 --> 00:02:24,500
+Let's run this in our terminal... and look at that output: perfect, valid JSON with zero hallucinations.
+
+28
+00:02:25,000 --> 00:02:30,500
+[ERDEM_SAHIN]: Now it is your turn to apply this framework and build your own prompt refactor!
+
+29
+00:02:31,000 --> 00:02:36,500
+In your course workspace, launch Exercise 1.1: The Production Prompt Refactor.
+
+30
+00:02:37,000 --> 00:02:43,000
+You will find chaotic enterprise prompts currently failing in production. Your mission: restructure them using the 4-Pillar framework.
+
+31
+00:02:43,500 --> 00:02:49,500
+Test your refactored prompts directly in the interactive sandbox, verify your schema validation, and submit your repo in the comments.
+
+32
+00:02:50,000 --> 00:02:55,500
+Master this pattern, and you command the foundational skill of enterprise AI engineering. I will see you in Video 1.2!

@@ -1,0 +1,476 @@
+1
+00:00:00,033 --> 00:00:02,366
+ Welcome to Module 1.1 of the
+
+2
+00:00:02,399 --> 00:00:04,683
+ Certified AI Associate course.
+
+3
+00:00:06,366 --> 00:00:08,433
+ Today, we're unpacking the foundational
+
+4
+00:00:08,433 --> 00:00:11,466
+ shift that turns unpredictable AI outputs
+
+5
+00:00:11,483 --> 00:00:13,883
+ into production-ready results, core
+
+6
+00:00:13,883 --> 00:00:15,300
+ prompting principles, and
+
+7
+00:00:15,300 --> 00:00:17,183
+ structured input formats.
+
+8
+00:00:18,683 --> 00:00:20,916
+ When working with large language models,
+
+9
+00:00:20,966 --> 00:00:23,133
+ clarity isn't just about good grammar.
+
+10
+00:00:23,433 --> 00:00:25,199
+ It's about system architecture.
+
+11
+00:00:25,649 --> 00:00:27,783
+ Effective prompts contain four key
+
+12
+00:00:27,816 --> 00:00:31,050
+ components-- a clear role, rich context,
+
+13
+00:00:31,133 --> 00:00:34,049
+ an explicit task, and strict constraints.
+
+14
+00:00:34,283 --> 00:00:36,333
+ When we wrap these components inside
+
+15
+00:00:36,333 --> 00:00:39,083
+ structured input formats like Markdown or
+
+16
+00:00:39,116 --> 00:00:41,933
+ JSON, we eliminate ambiguity and make
+
+17
+00:00:41,966 --> 00:00:43,533
+ outputs deterministic.
+
+18
+00:00:45,366 --> 00:00:47,850
+ If we look at our format decision, how we
+
+19
+00:00:47,850 --> 00:00:50,399
+ are going to use the Markdowns, we can
+
+20
+00:00:50,466 --> 00:00:52,466
+ see that the Markdown is
+
+21
+00:00:52,466 --> 00:00:54,983
+ comparable to JSON, to the XML.
+
+22
+00:00:55,016 --> 00:00:57,783
+ Once we are crafting our prompts, we are
+
+23
+00:00:57,783 --> 00:00:58,966
+ going to have the role,
+
+24
+00:00:58,966 --> 00:01:00,783
+ incident, task, and the output
+
+25
+00:01:02,066 --> 00:01:02,983
+ put on here.
+
+26
+00:01:03,200 --> 00:01:05,533
+ And we are going to use hashes to be able
+
+27
+00:01:05,533 --> 00:01:07,500
+ to identify, use the
+
+28
+00:01:07,500 --> 00:01:10,166
+ slash and the 123 format.
+
+29
+00:01:10,400 --> 00:01:14,683
+ If we go to the JSON format, we are going
+
+30
+00:01:14,683 --> 00:01:18,000
+ to mix the hashes with the curly braces,
+
+31
+00:01:18,466 --> 00:01:20,483
+ where we are going to be able to
+
+32
+00:01:20,483 --> 00:01:23,083
+ demonstrate the few shot demonstrations
+
+33
+00:01:23,083 --> 00:01:25,099
+ with inputs and the output.
+
+34
+00:01:26,016 --> 00:01:27,033
+ If we go to the
+
+35
+00:01:28,083 --> 00:01:30,966
+ XML, we are going to see that all the
+
+36
+00:01:30,966 --> 00:01:33,450
+ details are coming in with bigger than
+
+37
+00:01:33,483 --> 00:01:34,766
+ and smaller than signs
+
+38
+00:01:34,799 --> 00:01:36,566
+ and put into the text.
+
+39
+00:01:39,983 --> 00:01:41,250
+ Let's see this in action.
+
+40
+00:01:41,516 --> 00:01:43,650
+ Look at the left side of your screen, a
+
+41
+00:01:43,650 --> 00:01:46,283
+ standard, unstructured prompt asking for
+
+42
+00:01:46,283 --> 00:01:47,816
+ a competitive analysis.
+
+43
+00:01:48,000 --> 00:01:49,283
+ It's vague, lacks
+
+44
+00:01:49,283 --> 00:01:51,566
+ boundaries, and yields a messy essay.
+
+45
+00:01:53,216 --> 00:01:55,349
+ Now, watch what happens on the right when
+
+46
+00:01:55,349 --> 00:01:58,016
+ we reframe the exact same request using
+
+47
+00:01:58,016 --> 00:01:59,283
+ Markdown delimiters
+
+48
+00:01:59,316 --> 00:02:01,133
+ and a target JSON schema.
+
+49
+00:02:01,233 --> 00:02:03,299
+ If we look at the structured output
+
+50
+00:02:03,299 --> 00:02:05,666
+ versus the not structured output, we will
+
+51
+00:02:05,700 --> 00:02:08,333
+ be able to see the not structured output
+
+52
+00:02:08,366 --> 00:02:10,916
+ is coming out with no definitions.
+
+53
+00:02:10,949 --> 00:02:12,900
+ But with the structured output, we are
+
+54
+00:02:12,900 --> 00:02:15,066
+ going to see the hashtags, the role,
+
+55
+00:02:15,066 --> 00:02:16,349
+ context, and the task.
+
+56
+00:02:16,349 --> 00:02:18,866
+ This is going to help us define this
+
+57
+00:02:18,866 --> 00:02:22,016
+ process much faster and much easier.
+
+58
+00:02:22,349 --> 00:02:24,533
+ And you are going to see that the output
+
+59
+00:02:24,599 --> 00:02:27,066
+ is going to be much better because if we
+
+60
+00:02:27,066 --> 00:02:29,583
+ want to be able to integrate this into
+
+61
+00:02:29,583 --> 00:02:30,750
+ our code base, this is
+
+62
+00:02:30,783 --> 00:02:32,166
+ what we should aim for.
+
+63
+00:02:32,583 --> 00:02:35,166
+ By defining our system context, providing
+
+64
+00:02:35,183 --> 00:02:37,916
+ input parameters inside explicit tags,
+
+65
+00:02:37,949 --> 00:02:40,266
+ and requesting a strict output format,
+
+66
+00:02:40,349 --> 00:02:42,683
+ the AI skips the fluff and generates
+
+67
+00:02:42,683 --> 00:02:45,216
+ precise machine readable data ready for
+
+68
+00:02:45,216 --> 00:02:46,433
+ immediate integration.
+
+69
+00:02:48,300 --> 00:02:49,866
+ Now, let's build one together.
+
+70
+00:02:50,066 --> 00:02:52,316
+ Imagine you need an AI assistant to
+
+71
+00:02:52,316 --> 00:02:54,933
+ extract key deliverables and action items
+
+72
+00:02:54,933 --> 00:02:56,333
+ from raw meeting notes.
+
+73
+00:02:57,866 --> 00:02:58,866
+ First, declare the
+
+74
+00:02:58,866 --> 00:03:00,966
+ context using system tags.
+
+75
+00:03:01,283 --> 00:03:03,833
+ Second, place the raw meeting transcript
+
+76
+00:03:03,833 --> 00:03:07,316
+ inside clear XML or Markdown block quotes
+
+77
+00:03:07,349 --> 00:03:08,666
+ so the AI knows where
+
+78
+00:03:08,666 --> 00:03:10,466
+ the data starts and ends.
+
+79
+00:03:12,116 --> 00:03:13,949
+ Third, specify the exact
+
+80
+00:03:13,949 --> 00:03:15,416
+ schema for the response.
+
+81
+00:03:15,716 --> 00:03:17,933
+ Notice how setting constraints, like if a
+
+82
+00:03:17,933 --> 00:03:20,916
+ deadline is unknown, output null prevents
+
+83
+00:03:20,916 --> 00:03:22,133
+ the model from guessing
+
+84
+00:03:22,166 --> 00:03:23,783
+ or hallucinating dates.
+
+85
+00:03:25,349 --> 00:03:27,233
+ It's your turn to apply this framework.
+
+86
+00:03:27,683 --> 00:03:30,300
+ In your course workspace, launch exercise
+
+87
+00:03:30,300 --> 00:03:32,783
+ 1.1, the prompt refactor.
+
+88
+00:03:33,083 --> 00:03:35,466
+ You'll find real world enterprise prompts
+
+89
+00:03:35,466 --> 00:03:36,750
+ that are currently generating
+
+90
+00:03:36,816 --> 00:03:38,333
+ inconsistent results.
+
+91
+00:03:38,583 --> 00:03:41,016
+ Your task, restructure them using the
+
+92
+00:03:41,016 --> 00:03:43,733
+ role, context, task, constraint
+
+93
+00:03:43,733 --> 00:03:46,166
+ framework, and format the inputs using
+
+94
+00:03:46,166 --> 00:03:48,966
+ Markdown headers and XML boundaries.
+
+95
+00:03:50,216 --> 00:03:51,983
+ Test your prompt directly in the
+
+96
+00:03:52,016 --> 00:03:53,400
+ interactive sandbox to
+
+97
+00:03:53,400 --> 00:03:55,266
+ verify your output structure.
+
+98
+00:03:55,683 --> 00:03:57,816
+ Master this pattern, and you've unlocked
+
+99
+00:03:57,816 --> 00:03:58,883
+ the core engine of
+
+100
+00:03:58,883 --> 00:04:00,750
+ professional AI productivity.
+
+101
+00:04:01,116 --> 00:04:03,083
+ See you in video 1.2.
+
+102
+00:04:03,816 --> 00:04:05,066
+ Let's look at how we are
+
+103
+00:04:05,066 --> 00:04:06,633
+ going to do the example.
+
+104
+00:04:06,683 --> 00:04:08,849
+ And in the example, we have the chaotic
+
+105
+00:04:08,849 --> 00:04:11,633
+ version of our prompt and how we can
+
+106
+00:04:11,666 --> 00:04:12,783
+ construct it with the
+
+107
+00:04:12,783 --> 00:04:14,666
+ role, context, and the task.
+
+108
+00:04:15,116 --> 00:04:17,816
+ I have given all the bits and pieces on
+
+109
+00:04:17,850 --> 00:04:19,199
+ here for you guys to be
+
+110
+00:04:19,199 --> 00:04:20,916
+ able to go with the context.
+
+111
+00:04:21,266 --> 00:04:23,966
+ What we are going to give as a role, what
+
+112
+00:04:23,966 --> 00:04:26,516
+ is going to be our XML boundary to be
+
+113
+00:04:26,516 --> 00:04:29,216
+ able to take it on, and which tasks that
+
+114
+00:04:29,250 --> 00:04:31,733
+ we are going to add on, and which
+
+115
+00:04:31,733 --> 00:04:33,816
+ constraints that we are going to have.
+
+116
+00:04:34,166 --> 00:04:36,149
+ Make sure that you guys are able to do
+
+117
+00:04:36,149 --> 00:04:39,633
+ this and copy this and run this to make
+
+118
+00:04:39,633 --> 00:04:42,083
+ sure that you are able to get the result
+
+119
+00:04:42,083 --> 00:04:43,949
+ that you guys are wishing for.
+
