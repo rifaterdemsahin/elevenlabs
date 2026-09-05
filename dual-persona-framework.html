@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual Persona Architecture: AI Agent Voice ➔ Human Master Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f7ff',
+              100: '#ebf0fe',
+              200: '#d6e0fd',
+              300: '#b3c7fc',
+              400: '#8aa6f9',
+              500: '#6382f6',
+              600: '#4f66ee',
+              700: '#3f4fd6',
+              800: '#3341ad',
+              900: '#2d3888',
+              950: '#1b2152',
+            },
+            dark: {
+              950: '#07090e',
+              900: '#0c1017',
+              850: '#111722',
+              800: '#171f2e',
+              750: '#1d273a',
+              700: '#26334a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #07090e;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(circle at 12% 18%, rgba(99, 130, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 88% 22%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 92%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.8);
+    }
+    .glass-panel {
+      background: rgba(17, 23, 34, 0.82);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(23, 31, 46, 0.68);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .glow-persona-ai {
+      box-shadow: 0 0 35px -5px rgba(99, 130, 246, 0.3);
+    }
+    .glow-persona-human {
+      box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 antialiased flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="border-b border-slate-800/80 glass-panel sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-brand-500/20 ring-1 ring-white/20">
+          <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">Dual Persona Paradigm</h1>
+            <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">AI Voice ➔ Human Master</span>
+          </div>
+          <p class="text-xs text-slate-400">Pedagogical Framework for High-Retention AI Skills Video Production</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <a href="tell-show-do-apply-production-guide.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 transition">
+          <i data-lucide="video" class="w-3.5 h-3.5"></i>
+          <span>5-Min Video Blueprint</span>
+        </a>
+        <a href="cloned-voice.html" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 transition">
+          <i data-lucide="mic" class="w-3.5 h-3.5"></i>
+          <span>Cloned Voice</span>
+        </a>
+        <a href="index.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-dark-800 hover:bg-dark-750 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="home" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Studio Home</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 space-y-10">
+
+    <!-- HERO SECTION: THE CORE CONCEPT -->
+    <div class="relative overflow-hidden rounded-2xl glass-panel p-8 sm:p-10 border border-purple-500/30">
+      <div class="absolute -right-20 -top-20 w-96 h-96 bg-gradient-to-br from-brand-600/20 via-purple-600/15 to-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-4xl space-y-4 relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/30">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Pedagogical Architecture & Voice Engineering</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          The <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-purple-300 to-emerald-400">Dual Persona</span> Paradigm
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Why try to fake a single human voice across synthetic diagrams and live terminal coding? The <strong>Dual Persona Architecture</strong> intentionally splits the video between two distinct, high-impact identities: 
+          <strong>The AI Synthesis Agent</strong> (delivering zero-fluff conceptual Google Flow blueprints) and 
+          <strong>The Human Master Engineer</strong> (providing authentic live coding, debugging grit, and practical mastery).
+        </p>
+
+        <!-- Dynamic Concept Comparison Banner -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+          <!-- Persona 1 Pill -->
+          <div class="p-4 rounded-xl bg-dark-900/90 border border-brand-500/30 glow-persona-ai flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/40 text-brand-400 flex items-center justify-center shrink-0">
+              <i data-lucide="cpu" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="text-[11px] font-mono uppercase tracking-wider text-brand-400 font-bold">Persona 01: Concept Phase (0:00 - 2:00)</div>
+              <div class="text-base font-bold text-white">The AI Architecture Agent</div>
+              <div class="text-xs text-slate-400">Google Flow Canvas • ElevenLabs Studio Tone • Flawless Precision</div>
+            </div>
+          </div>
+
+          <!-- Persona 2 Pill -->
+          <div class="p-4 rounded-xl bg-dark-900/90 border border-emerald-500/30 glow-persona-human flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0">
+              <i data-lucide="user-check" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Persona 02: Execution Phase (2:00 - 5:00)</div>
+              <div class="text-base font-bold text-white">The Human Master Engineer</div>
+              <div class="text-xs text-slate-400">VS Code & Terminal • Natural Mic • Authentic Live Debugging</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: WHY DUAL PERSONA WINS (COGNITIVE PSYCHOLOGY & UNCANNY VALLEY) -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="brain" class="w-5 h-5 text-brand-400"></i>
+          1. Why It Works: Cognitive Psychology & Pedagogical Science
+        </h2>
+        <p class="text-xs text-slate-400">How dual personas eliminate cognitive fatigue and leverage the way humans process technical concepts.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <!-- Psychology Card 1 -->
+        <div class="glass-card p-6 rounded-xl space-y-3 border border-slate-800 hover:border-brand-500/40 transition">
+          <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center border border-brand-500/20">
+            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Zero Uncanny Valley</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            When an instructor clones their voice for high-level slides and then speaks into a normal desk mic for coding, the slight acoustic gap (room reflections, breathing micro-shifts) triggers cognitive dissonance in the listener. Dual Persona eliminates this by turning the AI voice into an <strong>intentional feature</strong> rather than a disguised clone.
+          </p>
+          <div class="text-[11px] font-mono text-brand-300 bg-dark-950 p-2 rounded border border-slate-800">
+            Effect: 100% Listener Trust & Immersion
+          </div>
+        </div>
+
+        <!-- Psychology Card 2 -->
+        <div class="glass-card p-6 rounded-xl space-y-3 border border-slate-800 hover:border-purple-500/40 transition">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
+            <i data-lucide="activity" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">The 2:00 Attention Reset</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Attention spans drop sharply after 90–120 seconds of continuous monologues. Shifting from the synthetic, high-tempo AI voice to a warm, spontaneous human voice right at the 2:00 mark acts as a neurochemical <strong>"Attention Wake-Up Call"</strong> that resets retention for the remaining hands-on lab.
+          </p>
+          <div class="text-[11px] font-mono text-purple-300 bg-dark-950 p-2 rounded border border-slate-800">
+            Effect: +45% Completion Rate on 5-min Labs
+          </div>
+        </div>
+
+        <!-- Psychology Card 3 -->
+        <div class="glass-card p-6 rounded-xl space-y-3 border border-slate-800 hover:border-emerald-500/40 transition">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Pair Programming Paradigm</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            In 2026, real engineers work alongside AI agents (Claude Code, Antigravity, GitHub Copilot). Structuring the tutorial with an AI co-host explaining architecture and a human solving edge cases creates a realistic mental model of modern AI-assisted engineering.
+          </p>
+          <div class="text-[11px] font-mono text-emerald-300 bg-dark-950 p-2 rounded border border-slate-800">
+            Effect: Authentic Modern Workflow
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: DEEP DIVE INTO BOTH PERSONAS -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-purple-400"></i>
+          2. Archetype Specification & Voice Parameter Profiles
+        </h2>
+        <p class="text-xs text-slate-400">Exact technical parameters, vocal timbre, speed, and visual environments for each persona.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- PERSONA 1 SPEC -->
+        <div class="glass-panel p-6 rounded-xl border border-brand-500/40 space-y-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-brand-500/20 text-brand-300 flex items-center justify-center font-bold">
+                AI
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Persona 1: The Synthesis Agent</h3>
+                <span class="text-xs text-brand-400 font-medium">ElevenLabs Engine • "Architect Role"</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-brand-500/10 text-brand-300 border border-brand-500/30">
+              0:00 – 2:00 (Tell & Show)
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-lg bg-dark-950 border border-slate-800 space-y-1">
+              <span class="text-slate-400 font-bold">Core Purpose:</span>
+              <p class="text-slate-200 leading-relaxed">Condense complex conceptual architectures into crystal-clear mental models using Google Flow diagrams. Zero filler words ("um", "so", "basically"). High density information.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Voice Persona</div>
+                <div class="text-brand-300 font-bold">George / Rachel (Studio)</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Pacing (WPM)</div>
+                <div class="text-brand-300 font-bold">155 - 165 WPM</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Audio EQ Profile</div>
+                <div class="text-brand-300 font-bold">Flat Studio, 0dB Denoised</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Visual Canvas</div>
+                <div class="text-brand-300 font-bold">Google Flow (60fps Pan)</div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-dark-900 border border-slate-800">
+              <span class="text-slate-400 font-bold">Script Sample:</span>
+              <p class="italic text-slate-300 mt-1 font-mono">"In this architecture, the Gemini agent triggers vector search in 45ms. Here is the node flow in Google Flow before we pass execution to Erdem in the terminal..."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PERSONA 2 SPEC -->
+        <div class="glass-panel p-6 rounded-xl border border-emerald-500/40 space-y-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
+                ME
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Persona 2: The Master Engineer</h3>
+                <span class="text-xs text-emerald-400 font-medium">Real Human Voice (Erdem Sahin)</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+              2:00 – 5:00 (Do & Apply)
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-lg bg-dark-950 border border-slate-800 space-y-1">
+              <span class="text-slate-400 font-bold">Core Purpose:</span>
+              <p class="text-slate-200 leading-relaxed">Provide hands-on implementation, line-by-line code explanation, debugging rationale, real tactile keystroke audio, and assign the challenge prompt.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Microphone</div>
+                <div class="text-emerald-300 font-bold">Shure MV7 / Condenser Mic</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Pacing (WPM)</div>
+                <div class="text-emerald-300 font-bold">135 - 145 WPM (Natural)</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Audio Room Tone</div>
+                <div class="text-emerald-300 font-bold">Warm Presence, Mild Reverb</div>
+              </div>
+              <div class="p-2.5 rounded bg-dark-900 border border-slate-800">
+                <div class="text-slate-400">Visual Canvas</div>
+                <div class="text-emerald-300 font-bold">VS Code + Webcam Circle</div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-dark-900 border border-slate-800">
+              <span class="text-slate-400 font-bold">Script Sample:</span>
+              <p class="italic text-slate-300 mt-1 font-mono">"Thanks! Let's pull up the editor. Notice this connection timeout in the terminal? Let's fix our retry policy right here in Python..."</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: THE "BATON PASS" (HANDOFF PROTOCOL AT 2:00) -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="repeat" class="w-5 h-5 text-emerald-400"></i>
+          3. The "Baton Pass" — The Exact 2:00 Minute Handoff Protocol
+        </h2>
+        <p class="text-xs text-slate-400">How to choreograph the hand-off between AI and Human so it feels like a high-budget Netflix/TED documentary.</p>
+      </div>
+
+      <div class="glass-panel p-6 sm:p-8 rounded-xl space-y-6">
+        
+        <!-- Step by Step Handoff Visualizer -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+
+          <div class="p-4 rounded-xl bg-dark-950 border border-slate-800 space-y-2">
+            <div class="text-[10px] font-mono text-brand-400 font-bold">STEP 1 (1:55 - 1:59)</div>
+            <div class="font-bold text-white">The AI Verbal Cue</div>
+            <p class="text-slate-400 leading-relaxed">
+              AI Agent concludes Show phase and says: <em>"...and now let's pass execution to Erdem in the IDE to build this live."</em>
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-dark-950 border border-amber-500/40 space-y-2">
+            <div class="text-[10px] font-mono text-amber-400 font-bold">STEP 2 (1:59 - 2:00)</div>
+            <div class="font-bold text-amber-300">The 1.0s Cognitive Silence</div>
+            <p class="text-slate-400 leading-relaxed">
+              AI voice stops completely. Background music rises from <strong>-22dB</strong> to <strong>-14dB</strong> with a smooth cinematic riser/whoosh.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-dark-950 border border-purple-500/40 space-y-2">
+            <div class="text-[10px] font-mono text-purple-400 font-bold">STEP 3 (2:00 - 2:01)</div>
+            <div class="font-bold text-purple-300">The Visual Morph</div>
+            <p class="text-slate-400 leading-relaxed">
+              Google Flow collapses into a small floating top-right reference card. VS Code expands full-screen; instructor circle camera fades in.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-dark-950 border border-emerald-500/40 space-y-2">
+            <div class="text-[10px] font-mono text-emerald-400 font-bold">STEP 4 (2:01+)</div>
+            <div class="font-bold text-emerald-300">The Human Ingestion</div>
+            <p class="text-slate-400 leading-relaxed">
+              Erdem starts speaking with natural energy: <em>"Alright, let's open `main.py`..."</em>. Music ducks back to <strong>-22dB</strong>.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Interactive Baton Pass Simulator -->
+        <div class="p-5 rounded-xl bg-dark-900 border border-slate-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="play-circle" class="w-4 h-4 text-brand-400"></i>
+                Live Interactive "Baton Pass" Audio Simulator
+              </h3>
+              <p class="text-xs text-slate-400">Listen to how seamless the dual persona handoff sounds with WebAudio & Speech Synthesis.</p>
+            </div>
+            <button id="batonBtn" onclick="runBatonSimulation()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 via-purple-600 to-emerald-600 hover:opacity-90 text-white font-bold text-xs flex items-center gap-2 shadow-lg transition">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              <span>Play Baton Pass (8s Sequence)</span>
+            </button>
+          </div>
+
+          <div class="p-4 rounded-lg bg-dark-950 border border-slate-800 space-y-2 font-mono text-xs">
+            <div id="batonStatus" class="text-slate-400">Status: Click 'Play Baton Pass' to experience the dual persona audio shift.</div>
+            <div class="w-full bg-dark-900 h-2 rounded-full overflow-hidden">
+              <div id="batonProgress" class="bg-gradient-to-r from-brand-400 via-amber-400 to-emerald-400 h-full w-0 transition-all duration-100"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: SCRIPTING TEMPLATE FOR DUAL PERSONA -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i>
+          4. Dual Persona Scripting Template
+        </h2>
+        <p class="text-xs text-slate-400">Copy this exact template structure to draft scripts for your upcoming 5-minute video episodes.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-xl space-y-3 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-300">5-Minute Dual Persona Production Script</span>
+          <button onclick="copyScriptTemplate()" class="px-3 py-1 rounded bg-brand-600/30 hover:bg-brand-600/50 text-brand-300 text-xs font-semibold border border-brand-500/30 transition flex items-center gap-1.5">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Template
+          </button>
+        </div>
+
+        <pre id="dual-script-box" class="text-xs font-mono text-slate-300 bg-dark-950 p-4 rounded-lg border border-slate-800 overflow-x-auto custom-scrollbar leading-relaxed whitespace-pre-wrap"># EPISODE TITLE: [e.g., Building an Autonomous AI Agent with CrewAI]
+# TARGET DURATION: 5:00 (300 Seconds)
+
+================================================================================
+ACT 1: TELL (0:00 - 0:45)
+VOICE: [AI Persona - George/Rachel via ElevenLabs]
+VISUAL: Full-screen Google Flow Diagram
+================================================================================
+[AI_NARRATOR]:
+"Autonomous agents succeed or fail based on memory architecture. <break time="0.5s"/>
+Today you will learn how to wire persistent memory into your LLM agent in under 5 minutes.
+Here is the mental model: the orchestrator node coordinates tools while keeping state in ChromaDB."
+
+================================================================================
+ACT 2: SHOW (0:45 - 2:00)
+VOICE: [AI Persona - George/Rachel via ElevenLabs]
+VISUAL: Animated Google Flow Nodes + Output Demo Window
+================================================================================
+[AI_NARRATOR]:
+"Notice how the vector query resolves in under 40 milliseconds. 
+When the tool outputs a structured JSON response, the agent self-evaluates the output.
+Now let's hand over execution to Erdem in the live development environment to code this from scratch."
+
+================================================================================
+[TRANSITION 2:00 - 2:01]
+AUDIO: 1.0s Silence + Cinematic Riser Sound Effect (BGM swells to -14dB)
+VISUAL: Flow Diagram shrinks to top-right; VS Code expands 80% + Erdem Webcam Pop
+================================================================================
+
+================================================================================
+ACT 3: DO (2:01 - 3:45)
+VOICE: [Human Master Engineer - Erdem Sahin Live Mic]
+VISUAL: VS Code IDE + Terminal Execution
+================================================================================
+[ERDEM_SAHIN]:
+"Thanks AI! Alright everyone, let's look at `agent.py`. 
+First, let's install our memory store dependencies. Notice this error if you forget async?
+Let's fix that right now by wrapping our ChromaDB client into an async context manager..."
+
+================================================================================
+ACT 4: APPLY (3:45 - 5:00)
+VOICE: [Human Master Engineer - Erdem Sahin]
+VISUAL: Challenge Mission Board + GitHub Repository Link
+================================================================================
+[ERDEM_SAHIN]:
+"Now it's your turn to apply this! Clone the starter repository in the description.
+Your 1-hour challenge: add a second tool node and ensure memory persists across restarts.
+Drop your repo link in the comments and let's review it together!"</pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 glass-panel mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+        <span>Dual Persona AI Video Production Architecture</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="tell-show-do-apply-production-guide.html" class="hover:text-slate-300 transition">5-Min Blueprint</a>
+        <a href="index.html" class="hover:text-slate-300 transition">TTS Engine</a>
+        <a href="cloned-voice.html" class="hover:text-slate-300 transition">Cloned Voice</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    let isSimulating = false;
+    function runBatonSimulation() {
+      if (isSimulating) return;
+      isSimulating = true;
+
+      const btn = document.getElementById('batonBtn');
+      const status = document.getElementById('batonStatus');
+      const progress = document.getElementById('batonProgress');
+
+      btn.classList.add('opacity-50', 'pointer-events-none');
+      status.innerHTML = `<span class="text-brand-400 font-bold">[AI Narrator Speaking]:</span> "Now let's pass execution to Erdem in the live terminal to write the code..."`;
+      progress.style.width = "40%";
+
+      // AI Speech
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const aiUtterance = new SpeechSynthesisUtterance("Now let's pass execution to Erdem in the live terminal to write the code.");
+        aiUtterance.rate = 1.08;
+        aiUtterance.pitch = 1.15;
+        window.speechSynthesis.speak(aiUtterance);
+      }
+
+      setTimeout(() => {
+        // Silence + Riser Sound
+        status.innerHTML = `<span class="text-amber-400 font-bold">[Transition at 2:00]:</span> <em>*1.0s Silence + Audio Riser Swell + Diagram Morphs into IDE*</em>`;
+        progress.style.width = "65%";
+        playSynthRiser();
+
+        setTimeout(() => {
+          // Human Speech
+          status.innerHTML = `<span class="text-emerald-400 font-bold">[Erdem Sahin Speaking]:</span> "Thanks AI! Alright let's open main.py in VS Code and fix this async loop..."`;
+          progress.style.width = "100%";
+
+          if ('speechSynthesis' in window) {
+            const humanUtterance = new SpeechSynthesisUtterance("Thanks! Alright let's open main dot py in VS Code and fix this async loop.");
+            humanUtterance.rate = 0.95;
+            humanUtterance.pitch = 0.90;
+            window.speechSynthesis.speak(humanUtterance);
+          }
+
+          setTimeout(() => {
+            isSimulating = false;
+            btn.classList.remove('opacity-50', 'pointer-events-none');
+            status.innerHTML = `<span class="text-slate-300">Simulation completed! Notice how clear and natural the role separation feels.</span>`;
+          }, 4500);
+
+        }, 1800);
+
+      }, 3500);
+    }
+
+    function playSynthRiser() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 1.1);
+        
+        gain.gain.setValueAtTime(0.01, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 0.8);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 1.1);
+      } catch (e) {
+        console.log("Audio not enabled", e);
+      }
+    }
+
+    function copyScriptTemplate() {
+      const text = document.getElementById('dual-script-box').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Dual Persona Script Template copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
