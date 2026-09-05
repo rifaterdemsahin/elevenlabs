@@ -3,14 +3,28 @@
 A comprehensive client-side studio for generating speech using **ElevenLabs models** (Eleven v3, Turbo v2.5, Multilingual v2) running on **fal.ai** serverless GPU infrastructure and direct ElevenLabs API.
 
 Deployed directly to GitHub Pages:
+- **Dual Persona Architecture**: [https://rifaterdemsahin.github.io/elevenlabs/dual-persona-framework.html](https://rifaterdemsahin.github.io/elevenlabs/dual-persona-framework.html)
+- **5-Min Video Production Blueprint**: [https://rifaterdemsahin.github.io/elevenlabs/tell-show-do-apply-production-guide.html](https://rifaterdemsahin.github.io/elevenlabs/tell-show-do-apply-production-guide.html)
 - **Standard Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/](https://rifaterdemsahin.github.io/elevenlabs/)
 - **Voice Cloning Hub & Search**: [https://rifaterdemsahin.github.io/elevenlabs/voice-cloning.html](https://rifaterdemsahin.github.io/elevenlabs/voice-cloning.html)
+- **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 - **Module 1.1 Player** (Core Prompting Principles): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/module-1-1-core-prompting/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/module-1-1-core-prompting/)
 - **Self-Mastery Player** (Active Self-Mastery): [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/active-self-mastery/)
 - **Voiceover Archive**: [https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/](https://rifaterdemsahin.github.io/elevenlabs/voiceovers/archive/)
-- **Rifat Erdem Sahin Cloned Voice Studio**: [https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html](https://rifaterdemsahin.github.io/elevenlabs/cloned-voice.html)
 
 ---
+
+## 🎭 Dual Persona Architecture: AI Agent Voice ➔ Human Master Engineer (Gold Standard)
+
+The video production paradigm for high-retention AI skill tutorials:
+- **Persona 1: The Architecture Synthesis AI** (0:00 – 2:00 • Tell & Show):
+  - ElevenLabs Neural Voice (Adam, Rachel, George) delivering zero-fluff, crisp conceptual mastery over **Google Flow diagrams** (155–165 WPM).
+- **The Baton Pass** (2:00):
+  - 1.0-second strategic silence + audio riser sound design + layout morph into VS Code.
+- **Persona 2: The Human Master Engineer** (2:00 – 5:00 • Do & Apply):
+  - Rifat Erdem Sahin on live mic, executing real code, debugging edge cases, and presenting the 1-hour challenge rubric.
+- **Why It Wins (9.8 / 10 Feasibility)**: Eliminates the uncanny valley, resets learner attention at 2:00, and authentically models modern AI-assisted engineering.
+- **Dedicated Interactive Guide**: [`dual-persona-framework.html`](dual-persona-framework.html) & [`tell-show-do-apply-production-guide.html`](tell-show-do-apply-production-guide.html).
 
 ## 🎙️ Voice Cloning Hub & Local Apple Silicon Architecture
 
